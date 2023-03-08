@@ -6,13 +6,13 @@
 {% block content %}
 <div class="row">
   {% for product in products%}
-    <div class="col-lg-4">
+    <div class="col-lg-4" id='cart-card'>
         <div class="card my-1" style="width: 18rem;">
             <img src="{{product.imageURL}} " class="card-img-top" alt="...">
             <div class="card-body">
               <div class="card-text"><h6>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></h6>
                 <hr>
-                  <button class='btn update-cart  btn-sm bg-danger text-light' data-product={{product.id}} data-action='add'>Add to Cart</button>  
+                  <button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button>  
               </div>
             </div>
           
