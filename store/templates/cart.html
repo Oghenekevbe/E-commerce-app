@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Obaya Online | Cart{% endblock title %}
+
+{% block content %}
+    <div class="row my-1">
+        <div class="col-lg-12">
+
+        {% comment %} items in the cart {% endcomment %}
+
+            <div class="box-element">
+                <a href="{% url 'store'%}" class='btn btn-outline-dark'>&#8592;Continue Shopping</a>
+                <hr>
+                <table class='table'>
+                    <tr>
+                        <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
+                        <th><h5>Total: <strong>price: ${{order.get_cart_total}}</strong></h5></th>
+                        <th>
+                            <a style='float:right; margin:5px'  href=" {% url 'checkout' %} " class='btn btn-outline-dark' >Checkout &rarr;</a>
+                        </th>
+                    </tr>
+
+                </table>
+
+            </div>
+
+
+            <div class="box-element">
+                <div class="cart-row">
+                    <div style='flex:2' ><strong></strong></div>
+                    <div style='flex:2' ><strong>Product</strong></div>
+                    <div style='flex:1' ><strong>Price</strong></div>
+                    <div style='flex:1' ><strong>Quantity
+                        </strong>
+                    </div>
+                    <div style='flex:1' ><strong>Total</strong></div>
+                </div>
+
+            </div>
+
+            <div class="box-element">
+                {% for item in items%}
+                    <div class="cart-row">
+                        <div style='flex:2' ><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='200'></div>
+                        <div style='flex:2' >{{item.product.name}}</div>
+                        <div style='flex:1' >{{item.product.price}}</div>
+                        <div style='flex:1' >
+                            <p class='quantity' style='margin-left:10px;'>{{item.quantity}}</p>
+                            <div class="quantity">
+                                <img class='change-quantity' src="{% static 'images/minus.png' %}" alt="" style='height: 30px;
+                                width: 15px;'>
+                                <img class='change-quantity'  src="{% static 'images/plus.png' %}" alt="" style='height: 10px;
+                                width: 10px;'d>
+                            </div>
+
+                        </div>
+                        <div style='flex:1' >{{item.get_total}}</div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+{% endblock content %}
