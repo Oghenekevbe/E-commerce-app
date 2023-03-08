@@ -30,12 +30,13 @@ btns.forEach(btn => {
     
 });
 
-function UpdateCart(e) {
-    let btn = e.target
-    console.log(btn);
+function UpdateCart(e){
+    let product_id = e.target.value
+    console.log( product_id);  
+   
     //we'll send the id through a url
     //we create a new variable
-
+    
     let url = '/add_to_cart'
     //since we're sending the product id as data to the backend
     let data = {id:product_id}
@@ -43,11 +44,14 @@ function UpdateCart(e) {
     fetch(url,{
         method  :   'POST',
         headers :   {'Content-Type':'application/json','X-CSRFToken': csrftoken},
-        body    :   JSON.stringify(data),
+        body    :   JSON.stringify(data)
     })
     .then(res=>res.json())
-    .then(data=>{console.log(data);})
-    .catch(error=>{console.log(error);})
+    .then(data=>{
+        document.getElementById('cart-badge').innerHTML= data
+        console.log(data)
+    })
+    .catch(error=>{console.log(error)})
 
 }
 

@@ -47,10 +47,16 @@
                         <div style='flex:1' >
                             <p class='quantity' style='margin-left:10px;'>{{item.quantity}}</p>
                             <div class="quantity">
-                                <img class='change-quantity' src="{% static 'images/minus.png' %}" alt="" style='height: 30px;
+                                {% comment %} <img class='change-quantity' src="{% static 'images/minus.png' %}" alt="" style='height: 30px;
                                 width: 15px;'>
                                 <img class='change-quantity'  src="{% static 'images/plus.png' %}" alt="" style='height: 10px;
-                                width: 10px;'d>
+                                width: 10px;'d> {% endcomment %}
+
+                                <div id="cart-card">
+                                    <button>-</button>
+                                    <button 'btn update-cart  btn-sm bg-danger text-light' value={{item.product.id}}>+</button>
+                                    <input type="number" name="quantity" value="1" class="vIntegerField" id="id_quantity">
+                                </div>
                             </div>
 
                         </div>
