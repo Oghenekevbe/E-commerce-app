@@ -11,3 +11,12 @@
 .quantity{
     display: inline-block;
 }
+
+
+/* buttons */
+#addition{
+    background-color:  #8bca84!important;
+}
+#subtraction{
+    background-color: #5bb450!important;
+}

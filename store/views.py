@@ -1,38 +1,46 @@
 from django.shortcuts import render
 from .models import *
-from .utils import CartData
 from django.http import JsonResponse
 import json
 
 # Create your views here.
 
 def store(request):
+    order = None
+    order_items = []
     products = Product.objects.all()
-    cart_data = CartData(request)
-    items = cart_data['items']
-    order = cart_data['order']
+    if request.user.is_authenticated:
+        order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
     
 
-    context = {'products':products,'items': items, 'order': order }
+    context = {'products':products, 'order': order }
     return render(request, 'store.html', context)
 
 def cart(request):
-        
-    cart_data = CartData(request)
-    items = cart_data['items']
-    order = cart_data['order']
-    
-    context = {'items': items, 'order': order}
+    order = None
+    order_item = []
+   
+    if request.user.is_authenticated:
+        order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
+        order_item = order.orderitem_set.all()
+
+
+    context = {'items': order_item, 'order': order}
     return render(request, 'cart.html', context)
 
-def checkout(request):
-    
-    cart_data = CartData(request)
-    items = cart_data['items']
-    order = cart_data['order']
 
+def checkout(request):
+    order = None
+    order_item = []
+    product = Product.objects.all()
+    if request.user.is_authenticated:
+      order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
+      order_item = order.orderitem_set.all()
+  
+      cart_total = order.get_cart_total
+ 
     
-    context = {'items': items, 'order': order}
+    context = {'product':product, 'items': order_item, 'order': order}
     return render(request, 'checkout.html', context)
 
 
