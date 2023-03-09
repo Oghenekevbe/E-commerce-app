@@ -3,91 +3,133 @@
 {% block title %}Obaya Online | Checkout{% endblock title %}
 
 {% block content %}
-    <div class="row">
-        <div class="col" >
-           
-                <div class="box-element" id='form-wrapper'>
-                    <form action="" id="form">
-                        <div class="user-info">
-                            <label for="firstName">First name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                            <label for="lastName">Last name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}">
 
+    <a href="{% url 'cart' %}" class='btn btn-outline-dark my-2'>Back to Cart</a>                
 
-                            <label for="email">Email <span class="text-muted">(Optional)</span></label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+    <div class="row" id='checkout-wrapper'>
 
-                        </div>
-                    
+        <div class="col" id='checkout-boxes' >
 
-
-
-                        <div class="shipping-info">
-                            
-                            <div class="mb-3">
-                                <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                                <div class="invalid-feedback">
-                                Please enter your shipping address.
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="box-element" id='form-wrapper'>
+                            <form action="" id="form">
+                                <div class="user-info">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+        
+        
+        
+                                    <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+        
                                 </div>
-                            </div>
-                
-                            <div class="mb-3">
-                                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-                            </div>
-                
-
-                        </div>
-                        <hr>
-
-                        <input type="submit" value='continue' id='form-button'>
-
-                    </form>
-                </div>
-
-                <div class="box-element hidden" id='payment-info'>
-                    <small>Paypal Payment</small>
-    
-                </div>
-
-                <div class="box-element">
-                    <a href="{% url 'cart' %}" class='btn btn-outline-dark'>Back to Cart</a>
-                    <hr>
-                    <h3>Order Summary</h3>
-                    <hr>
-                    <table class='table'>
-                        <tr>
-                            <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
-                            <th><h5>Total: <strong>price: ${{order.get_cart_total}}</strong></h5></th>
                             
-
-                    </table>
-                    <div class="box-element">
-                        {% for item in items%}
-                            <div class="cart-row">
-                                <div style='flex:2' ><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='50'></div>
-                                <div style='flex:2' >{{item.product.name}}</div>
-                                <div style='flex:1' >{{item.product.price}}</div>
-                                <div style='flex:1' ><p class='quantity'>{{item.quantity}}</p></div>
-                                <div style='flex:1' >{{item.get_total}}</div>
-                            </div>
-                        {% endfor %}
         
+        
+        
+                                <div class="shipping-info">
+                                    
+                                    <div class="mb-3">
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                                        <div class="invalid-feedback">
+                                        Please enter your shipping address.
+                                        </div>
+                                    </div>
+                        
+                                    <div class="mb-3">
+                                        <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                                        <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                                    </div>
+                        
+        
+                                </div>
+                          
+        
+                            </form>
+                        </div>
+                        <div class="box-element" id='payment-info'>
+                            <button type="button" onclick="makePayment()" class='btn btn-lg bg-success text-light'>Pay Now</button>
+            
+                        </div>
+
+                      
                     </div>
-        
-
                 </div>
-            
 
-            
+                <div class="card">
+                    <div class="card-body">
+                        <div class="box-element">
+                    
+                            <h3>Order Summary</h3>
+                            <hr>
+                            <table class='table'>
+                                <tr>
+                                    <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
+                                    <th><h5>Total: <strong>price: ${{order.get_cart_total}}</strong></h5></th>
+                                    
+        
+                            </table>
+                            <div class="box-element">
+                                {% for item in items%}
+                                    <div class="cart-row">
+                                        <div style='flex:2' ><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='50'></div>
+                                        <div style='flex:2' >{{item.product.name}}</div>
+                                        <div style='flex:1' >{{item.product.price}}</div>
+                                        <div style='flex:1' ><p class='quantity'>{{item.quantity}}</p></div>
+                                        <div style='flex:1' >{{item.get_total}}</div>
+                                    </div>
+                                {% endfor %}
+                
+                            </div>
+                
+        
+                        </div>
+                    </div>
+                </div>
 
+
+                
           
 
         </div>
     </div>
 
 
+
+
+
+<script>
+    function makePayment() {
+        FlutterwaveCheckout({
+          public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
+          tx_ref: "titanic-48981487343MDI0NzMx",
+          amount: 54600,
+          currency: "NGN",
+          payment_options: "card, mobilemoneyghana, ussd",
+          redirect_url: "https://glaciers.titanic.com/handle-flutterwave-payment",
+          meta: {
+            consumer_id: 23,
+            consumer_mac: "92a3-912ba-1192a",
+          },
+          customer: {
+            email: "rose@unsinkableship.com",
+            phone_number: "08102909304",
+            name: "Rose DeWitt Bukater",
+          },
+          customizations: {
+            title: "The Titanic Store",
+            description: "Payment for an awesome cruise",
+            logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+          },
+        });
+      }
+</script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
 {% endblock content %}

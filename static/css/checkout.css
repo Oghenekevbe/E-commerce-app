@@ -1,1 +1,40 @@
 
+
+
+.cart-row{
+    display: flex;
+    align-items: flex-stretch;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid;
+}
+
+.quantity{
+    display: inline-block;
+}
+
+.card{
+    margin: 10px;
+    width: 60rem !important;
+} 
+
+#checkout-wrapper #checkout-boxes{
+    display: flex;
+}
+  
+  
+
+
+
+
+
+
+
+
+/* Small screens (up to 576px) */
+@media (max-width: 760px) {
+
+
+    
+  }
+  
