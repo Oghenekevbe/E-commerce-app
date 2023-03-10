@@ -106,26 +106,31 @@
 
 
 <script>
+    let cart_total = '{{order.get_cart_total}}'
+    let cart_id = '{{order.transaction_id}}'
+    let customer_name = '{{customer_name}}';
+    let customer_email = '{{customer_email}}';
+    let customer_phone_number = '{{customer_phone_number}}';
     function makePayment() {
         FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
-          tx_ref: "titanic-48981487343MDI0NzMx",
-          amount: 54600,
+          public_key: "FLWPUBK_TEST-c4be858d739f16100797d96169b98e0f-X",
+          tx_ref: "cart_id",
+          amount: cart_total,
           currency: "NGN",
           payment_options: "card, mobilemoneyghana, ussd",
-          redirect_url: "https://glaciers.titanic.com/handle-flutterwave-payment",
+          redirect_url: "127.0.0.1:8000/confirm_payment",
           meta: {
-            consumer_id: 23,
+            consumer_id: cart_id,
             consumer_mac: "92a3-912ba-1192a",
           },
           customer: {
-            email: "rose@unsinkableship.com",
-            phone_number: "08102909304",
-            name: "Rose DeWitt Bukater",
+            email: "customer_email",
+            //phone_number: "customer_phone_number",
+            name: "customer_name",
           },
           customizations: {
-            title: "The Titanic Store",
-            description: "Payment for an awesome cruise",
+            title: "Obaya Online",
+            description: "Obaya Online Purchases"+cart_id,
             logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
           },
         });

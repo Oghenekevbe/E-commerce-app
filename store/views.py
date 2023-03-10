@@ -37,11 +37,15 @@ def checkout(request):
     if request.user.is_authenticated:
       order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
       order_item = order.orderitem_set.all()
-  
+      customer_name = order.customer.name
+      customer_email = order.customer.email
+      customer_phone_number = order.customer.phone_number      
       cart_total = order.get_cart_total
  
     
-    context = {'product':product, 'items': order_item, 'order': order}
+    context = {'product':product, 'items': order_item, 'order': order,'customer_name': customer_name,
+    'customer_email': customer_email,
+    'customer_phone_number': customer_phone_number}
     return render(request, 'checkout.html', context)
 
 
