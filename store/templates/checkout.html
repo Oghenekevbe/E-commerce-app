@@ -105,36 +105,40 @@
 
 
 
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+
 <script>
     let cart_total = '{{order.get_cart_total}}'
     let cart_id = '{{order.transaction_id}}'
+    let customer_id = '{{customer_id}}';
     let customer_name = '{{customer_name}}';
     let customer_email = '{{customer_email}}';
-    let customer_phone_number = '{{customer_phone_number}}';
+    let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
+    //let customer_phone_number = '{{customer_phone_number}}';
     function makePayment() {
         FlutterwaveCheckout({
           public_key: "FLWPUBK_TEST-c4be858d739f16100797d96169b98e0f-X",
-          tx_ref: "cart_id",
+          tx_ref: cart_id,
           amount: cart_total,
           currency: "NGN",
           payment_options: "card, mobilemoneyghana, ussd",
-          redirect_url: "127.0.0.1:8000/confirm_payment",
+          redirect_url: "http://127.0.0.1:8000/confirm_payment/",
           meta: {
-            consumer_id: cart_id,
+            consumer_id: customer_id,
             consumer_mac: "92a3-912ba-1192a",
           },
           customer: {
-            email: "customer_email",
+            email: customer_email,
             //phone_number: "customer_phone_number",
-            name: "customer_name",
+            name: customer_name,
           },
           customizations: {
             title: "Obaya Online",
             description: "Obaya Online Purchases"+cart_id,
-            logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+            logo: logoUrl,
           },
         });
       }
 </script>
-<script src="https://checkout.flutterwave.com/v3.js"></script>
+
 {% endblock content %}
