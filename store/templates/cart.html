@@ -47,18 +47,12 @@
                         <div style='flex:2' ><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='200'></div>
                         <div style='flex:2' >{{item.product.name}}</div>
                         <div style='flex:1' >{{item.product.price}}</div>
-                        <div style='flex:1' >
-                            <p class='quantity' style='margin-left:10px;'>{{item.quantity}}</p>
-                            <div class="quantity">
-
-
-                                <div id="cart-card">
-                                    <button id='addition' class='btn update-cart  btn-sm  text-light'>&#8211;</button>
-                                    <button id='subtraction' class='btn update-cart btn-sm  text-light'>&#43;    </button>
-                                </div>
-                            </div>
-
-                        </div>
+                        <div class="quantity">
+                            <div id="cart-card-{{ item.id }}">
+                              <button class="btn update-cart" data-action="subtraction" data-item-id="{{ item.id }}">-</button>
+                              <span id="quantity-{{ item.id }}" class="quantity-value">{{ item.quantity }}</span>
+                              <button class="btn update-cart" data-action="addition" data-item-id="{{ item.id }}">+</button>
+                            </div>                        
                         <div style='flex:1' >{{item.get_total}}</div>
                     </div>
                 {% endfor %}

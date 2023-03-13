@@ -105,7 +105,7 @@
 
 
 
-<script src="https://checkout.flutterwave.com/v3.js"></script>
+{% comment %} <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <script>
     let cart_total = '{{order.get_cart_total}}'
@@ -139,6 +139,44 @@
           },
         });
       }
+</script> {% endcomment %}
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+
+
+let cart_total = '{{order.get_cart_total}}'
+let cart_id = '{{order.transaction_id}}'
+let customer_id = '{{customer_id}}';
+let customer_email = '{{customer_email}}';
+let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
+
+
+  function makePayment() {
+    FlutterwaveCheckout({
+      public_key: "FLWPUBK_TEST-c4be858d739f16100797d96169b98e0f-X",
+      tx_ref: cart_id,
+      amount: cart_total,
+      currency: "USD",
+      payment_options: "card, mobilemoneyghana, ussd",
+      redirect_url: "http://127.0.0.1:8000/confirm_payment/"+cart_id,
+      meta: {
+        consumer_id: customer_id,
+        consumer_mac: "92a3-912ba-1192a",
+      },
+      customer: {
+        email: customer_email,
+        name: "{{request.user.username}}",
+      },
+      customizations: {
+        title: "My Shop",
+        description: "Buy with ease",
+        logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+      },
+    });
+  }
+
 </script>
+
 
 {% endblock content %}
