@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Obaya Online | Cart{% endblock title %}
-
 {% block content %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
 
 
@@ -47,12 +47,13 @@
                         <div style='flex:2' ><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='200'></div>
                         <div style='flex:2' >{{item.product.name}}</div>
                         <div style='flex:1' >{{item.product.price}}</div>
-                        <div class="quantity">
+                        <div style='flex:1' class="quantity">
                             <div id="cart-card-{{ item.id }}">
                               <button class="btn update-cart" data-action="subtraction" data-item-id="{{ item.id }}">-</button>
                               <span id="quantity-{{ item.id }}" class="quantity-value">{{ item.quantity }}</span>
                               <button class="btn update-cart" data-action="addition" data-item-id="{{ item.id }}">+</button>
-                            </div>                        
+                            </div>
+                        </div>                        
                         <div style='flex:1' >{{item.get_total}}</div>
                     </div>
                 {% endfor %}

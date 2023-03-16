@@ -7,6 +7,10 @@
     margin-bottom: 10px;
     border-bottom: 1px solid;
 }
+.cart-row-items{
+    display: flex;
+    align-items: flex-stretch;
+}
 
 .quantity{
     display: inline-block;

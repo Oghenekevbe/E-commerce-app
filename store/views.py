@@ -4,6 +4,13 @@ from django.http import JsonResponse
 import json
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.views import generic
+
+
+
 
 # Create your views here.
 
@@ -20,7 +27,11 @@ def store(request):
     items = []
     
     if request.user.is_authenticated:
-        customer = request.user.customer
+        try:
+            customer = request.user.customer
+        except Customer.DoesNotExist:
+            customer = Customer.objects.create(user=request.user)
+
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
 
@@ -110,3 +121,14 @@ def ConfirmPayment(request,pk):
     order.save()
     messages.success(request, "Payment made successfully")
     return redirect('store')
+
+
+
+# USER CREDENTIALS
+
+class Register(CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
+
+
