@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 {% block title %}Obaya Online | Profile{% endblock title %}
 
+
 {% block content %}
-    <div>
-        <h1>Profile</h1>
   {% if customer %}
     <p>Name: {{ customer.user }}</p>
     <p>Email: {{ customer.user.email }}</p>
-    {% if customer.address %}
-      <p>Shipping Address:</p>
-      <p>{{ customer.address.address }}</p>
-      <p>{{ customer.address.city }}, {{ customer.address.state }} {{ customer.address.zipcode }}</p>
+    {% if customer_address %}
+    <h6>Address:</h6>
+      <p>{{ customer_address.street_address }}</p>
+      {% if customer_address.apartment_address %}
+        <p>{{ customer_address.apartment_address }}</p>
+      {% endif %}
+      <p>{{ customer_address.city }}, {{ customer_address.state }} {{ customer_address.zipcode }}</p>
+      <p>{{ customer_address.country }}</p>
+      <p><a href="">(Edit)</a> |  <a href="">(Delete)</a></p>
     {% else %}
-      <p>No shipping address on file.</p>
+      <p>No address on file.</p>
     {% endif %}
   {% else %}
     <p>You are not logged in.</p>
   {% endif %}
-    </div>
-
-{% endblock content %}
+{% endblock %}

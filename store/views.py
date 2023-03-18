@@ -121,16 +121,13 @@ class Profile(DetailView):
     model = Customer
     template_name = "registration/profile.html"
     context_object_name = 'customer'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         customer = self.get_object()
-        if customer.address is not None:
-            shipping_address = customer.address
-            context['shipping_address'] = shipping_address
-        return context
-
-
+        customer_address = get_object_or_404(CustomerAddress, customer=customer)
+        context['customer_address'] = customer_address
+        return context  
 
 
 
