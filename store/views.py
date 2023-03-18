@@ -1,14 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.http import JsonResponse
 import json
 from django.contrib import messages
 from django.db.models import Q
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
+from django.contrib.auth.views import LoginView
 from django.views import generic
-
+from .forms import *
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -91,29 +93,6 @@ def AddToCart(request):
     
         return JsonResponse(total_items, safe=False)
 
-# def update_cart(request):
-#     data = json.loads(request.body)
-#     product_id= data['id']
-#     operation = data['operation']
-#     quantity = data['quantity']
-#     product = Product.objects.get(id=product_id)
-    
-#     if request.user.is_authenticated:
-#         customer = request.user.customer
-#         order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
-#         order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
-#         if operation == 'add':
-#             order_item.quantity = quantity
-#         elif operation == 'remove':
-#             order_item.quantity -= 1
-#         if order_item.quantity <= 0:
-#             order_item.delete()
-#         else:
-#             order_item.save()
-
-#         total_items = order.get_cart_items()
-
-#         return JsonResponse({'quantity': order_item.quantity, 'total_items': total_items}, safe=False)
 
 def ConfirmPayment(request,pk):
     Order = order.object.get(id=pk)
@@ -127,8 +106,33 @@ def ConfirmPayment(request,pk):
 # USER CREDENTIALS
 
 class Register(CreateView):
-    form_class = UserCreationForm
+    form_class = RegistrationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
+
+
+class EmailLoginView(LoginView):
+    authentication_form = EmailAuthenticationForm
+    template_name = 'login.html'
+
+
+
+class Profile(DetailView):
+    model = Customer
+    template_name = "registration/profile.html"
+    context_object_name = 'customer'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        customer = self.get_object()
+        if customer.address is not None:
+            shipping_address = customer.address
+            context['shipping_address'] = shipping_address
+        return context
+
+
+
+
+
 
 

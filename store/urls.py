@@ -17,6 +17,7 @@ urlpatterns = [
 
     # USER CREDENTIALS
     path("register/", Register.as_view(), name="register"), 
+    path("<str:pk>/profile/", Profile.as_view(), name="profile"), 
 
 
 
@@ -24,3 +25,5 @@ urlpatterns = [
 
 
 ]
+
+
