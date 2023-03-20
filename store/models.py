@@ -6,34 +6,8 @@ from django.utils import timezone
 
 # Create your models here.
 
-
-
-
-class CustomerAddress(models.Model):
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
-    apartment_address = models.CharField(max_length=200, null=True, blank=True)
-    street_address = models.CharField(max_length=200, null=True, blank=True)
-    city = models.CharField(max_length=200, null=True, blank=True)
-    state = models.CharField(max_length=200, null=True, blank=True)
-    zipcode = models.CharField(max_length=200, null=True, blank=True)
-    country = models.CharField(max_length=200, null=True, blank=True)
-    date_added = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f"{self.customer.user}'s Address"
-
-
-class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=254, null=True)
-    address = models.ForeignKey(CustomerAddress, related_name='customer_address', on_delete=models.CASCADE, null=True, blank=True)
-
-    def __str__(self):
-        return str(self.user)
-
-
 class BillingAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, blank=True, null=True,related_name='billing_addresses')
     address = models.CharField(max_length=225, null=True, blank=True)
     city = models.CharField(max_length=225, null=True, blank=True)
     state = models.CharField(max_length=225, null=True, blank=True)
@@ -41,9 +15,22 @@ class BillingAddress(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.address
+        return self.address   
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    billing_address = models.ForeignKey(BillingAddress, related_name='customers', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user)
+
+
 
  
+ 
+
+
 
         
 class Product(models.Model):
@@ -67,8 +54,8 @@ class Product(models.Model):
     
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-    billing_address = models.ForeignKey(BillingAddress, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(Customer, related_name='orders', null=True, blank=True, on_delete =models.CASCADE )
+    billing_address = models.ForeignKey(BillingAddress, on_delete=models.SET_NULL, blank=True, null=True, related_name='billing_address_order_set')    
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
@@ -87,6 +74,10 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
+    
+    
+
+    
     
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)

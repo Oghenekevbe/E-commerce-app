@@ -36,11 +36,10 @@
                                 <div class="shipping-info">
                                     
                                     <select name="billing_address" class="form-select" required>
-                                        {% for address in customer.customer.shipping_address.all %}
-                                            <option value="{{ address.id }}" {% if address == customer.customer.address %}selected{% endif %}>{{ address.address }}</option>
+                                        {% for address in customer_addresses %}
+                                            <option value="{{ address.id }}" {% if address == customer_address %}selected{% endif %}>{{ address.address }}</option>
                                         {% endfor %}
                                     </select>
-                        
         
                                 </div>
         

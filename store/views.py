@@ -63,12 +63,13 @@ def checkout(request):
       order_item = order.orderitem_set.all()
       customer_id = order.customer.user.id
       customer_name = order.customer.user
-      customer_email = order.customer.email
+      customer_email = order.customer.user.email
+      customer_address = order.billing_address
       cart_total = order.get_cart_total
 
     
     context = {'product':product, 'items': order_item, 'order': order,'customer_id': customer_id,'customer_name': customer_name,
-    'customer_email': customer_email}
+    'customer_email': customer_email, 'customer_address':customer_address}
     return render(request, 'checkout.html', context)
 
 
@@ -121,13 +122,7 @@ class Profile(DetailView):
     model = Customer
     template_name = "registration/profile.html"
     context_object_name = 'customer'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        customer = self.get_object()
-        customer_address = get_object_or_404(CustomerAddress, customer=customer)
-        context['customer_address'] = customer_address
-        return context  
+    
 
 
 
