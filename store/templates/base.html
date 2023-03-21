@@ -49,7 +49,7 @@
                   <ul class="dropdown-menu">
                     
                     <li><a class="dropdown-item" href="{% url 'profile' user.customer.pk %}">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'change_password' user.customer.pk %}">Change Password</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                   </ul>

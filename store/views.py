@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import LoginView
 from django.views import generic
 from .forms import *
@@ -119,11 +120,30 @@ class EmailLoginView(LoginView):
 
 
 class Profile(DetailView):
+      
     model = Customer
     template_name = "registration/profile.html"
     context_object_name = 'customer'
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
+            order_item = order.orderitem_set.all()
+            context["order"] = order
+            context["order_item"] = order_item
+        return context
+        
 
+class EditProfile(UpdateView):
+    model = User
+    template_name = "registration/edit_profile.html"
+    form_class = ProfileForm
+    success_url = '/'
+    
+class ChangePassword(PasswordChangeView):
+    form_class = ChangePasswordForm
+    success_url = reverse_lazy('store')
 
 
 

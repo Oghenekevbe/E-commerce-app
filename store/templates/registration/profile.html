@@ -3,7 +3,12 @@
 
 
 {% block content %}
-  {% if customer %}
+  <div class="row">
+    <div class="col">
+      {% if customer %}
+      <div class="col-2">
+        <p><a class="dropdown-item" href="{% url 'edit_profile' customer.user.pk %}">Edit Profile</a></p>
+      </div>      
     <p>Name: {{ customer.user }}</p>
     <p>Email: {{ customer.user.email }}</p>
     {% if customer_address %}
@@ -18,7 +23,10 @@
     {% else %}
       <p>No address on file.</p>
     {% endif %}
-  {% else %}
-    <p>You are not logged in.</p>
-  {% endif %}
+    {% else %}
+      <p>You are not logged in.</p>
+    {% endif %}
+
+    </div>
+  </div>
 {% endblock %}

@@ -18,6 +18,8 @@ urlpatterns = [
     # USER CREDENTIALS
     path("register/", Register.as_view(), name="register"), 
     path("<str:pk>/profile/", Profile.as_view(), name="profile"), 
+    path("<str:pk>/edit_profile/", EditProfile.as_view(), name="edit_profile"), 
+    path("<str:pk>/change_password/", ChangePassword.as_view(template_name='registration/change_password.html'), name="change_password"), 
 
 
 
