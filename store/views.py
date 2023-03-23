@@ -14,10 +14,15 @@ from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.decorators import user_passes_test
 
 
 
 # Create your views here.
+@user_passes_test(lambda u: u.is_staff)
+def contacts(request, *args, **kwargs):
+    view = ContactView.as_view()
+    return view(request, *args, **kwargs)
 
 
 def store(request):
@@ -148,6 +153,8 @@ class ChangePassword(PasswordChangeView):
     success_url = reverse_lazy('store')
 
 
+
+
 class ContactView(CreateView):
     model = Contact
     template_name = 'customer/contact_us.html'
@@ -170,3 +177,26 @@ class ContactView(CreateView):
                   )
                   
         return response
+    
+    
+    
+class ContactView2(CreateView):
+    form_class = ContactForm
+    template_name = 'customer/contact_us2.html'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.send_email()
+            return redirect('store')
+        return render(request, self.template_name, {'form': form})
+
+
+@user_passes_test(lambda u: u.is_staff)
+def contacts(request, *args, **kwargs):
+    view = ContactView.as_view()
+    return view(request, *args, **kwargs)

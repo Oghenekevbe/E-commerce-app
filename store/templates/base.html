@@ -50,7 +50,10 @@
                     
                     <li><a class="dropdown-item" href="{% url 'profile' user.customer.pk %}">Profile</a></li>
                     <li><a class="dropdown-item" href="{% url 'change_password' user.customer.pk %}">Change Password</a></li>
-                    <li><a class="dropdown-item" href="{% url 'contact_us' %}">Contact Us</a></li>
+                    {% if user.is_staff %}
+                    <li><a class="dropdown-item" href="{% url 'contact_us' %}">Contact Customer</a></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'contact_us2' %}">Contact Us</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                   </ul>
@@ -63,6 +66,7 @@
                   <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="register">Register</a></li>
+                  <li><a class="dropdown-item" href="{% url 'contact_us2' %}">Contact Us</a></li>
                 </ul>
                 {% endif %}
               </li>

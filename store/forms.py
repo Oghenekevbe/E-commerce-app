@@ -2,6 +2,8 @@ from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
 class RegistrationForm(UserCreationForm):
@@ -68,3 +70,22 @@ class ChangePasswordForm(PasswordChangeForm):
         fields = ('old_password', 'new_password1', 'new_password2')
 
 
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)
+
+    def send_email(self):
+        # Get the cleaned data from the form
+        name = self.cleaned_data['name']
+        email = self.cleaned_data['email']
+        subject = self.cleaned_data['subject']
+        message = self.cleaned_data['message']
+
+        # Construct the email message
+        email_body = f"Name: {name}\nEmail: {email}\n\nMessage: {message}"
+        email = EmailMessage(subject, email_body, to=[settings.EMAIL_HOST_USER])
+
+        # Send the email
+        email.send()

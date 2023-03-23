@@ -23,6 +23,7 @@ urlpatterns = [
 
     # USER INTERACTIONS
     path("contact_us/", ContactView.as_view(), name="contact_us"), 
+    path("contact_us2/", ContactView2.as_view(), name="contact_us2"), 
 
 
 
