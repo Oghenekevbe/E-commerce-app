@@ -21,7 +21,8 @@ urlpatterns = [
     path("<str:pk>/edit_profile/", EditProfile.as_view(), name="edit_profile"), 
     path("<str:pk>/change_password/", ChangePassword.as_view(template_name='registration/change_password.html'), name="change_password"), 
 
-
+    # USER INTERACTIONS
+    path("contact_us/", ContactView.as_view(), name="contact_us"), 
 
 
 

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block title %}Obaya Online | Checkout{% endblock title %}
-
+{% load static %}
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}">
@@ -17,7 +16,7 @@
                     <div class="card-body">
                         <div class="box-element" id='form-wrapper'>
                             <form action="" id="form">
-                                <div class="user-info">
+                                {% comment %} <div class="user-info">
                                     <label for="firstName">First name</label>
                                     <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
                                     <label for="lastName">Last name</label>
@@ -28,7 +27,7 @@
                                     <label for="email">Email <span class="text-muted">(Optional)</span></label>
                                     <input type="email" class="form-control" id="email" placeholder="you@example.com">
         
-                                </div>
+                                </div> {% endcomment %}
                             
         
         
@@ -91,42 +90,6 @@
 
 
 
-{% comment %} <script src="https://checkout.flutterwave.com/v3.js"></script>
-
-<script>
-    let cart_total = '{{order.get_cart_total}}'
-    let cart_id = '{{order.transaction_id}}'
-    let customer_id = '{{customer_id}}';
-    let customer_name = '{{customer_name}}';
-    let customer_email = '{{customer_email}}';
-    let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
-    //let customer_phone_number = '{{customer_phone_number}}';
-    function makePayment() {
-        FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-c4be858d739f16100797d96169b98e0f-X",
-          tx_ref: cart_id,
-          amount: cart_total,
-          currency: "NGN",
-          payment_options: "card, mobilemoneyghana, ussd",
-          redirect_url: "http://127.0.0.1:8000/confirm_payment/",
-          meta: {
-            consumer_id: customer_id,
-            consumer_mac: "92a3-912ba-1192a",
-          },
-          customer: {
-            email: customer_email,
-            //phone_number: "customer_phone_number",
-            name: customer_name,
-          },
-          customizations: {
-            title: "Obaya Online",
-            description: "Obaya Online Purchases"+cart_id,
-            logo: logoUrl,
-          },
-        });
-      }
-</script> {% endcomment %}
-
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <script>
@@ -139,10 +102,10 @@
 
     function makePayment() {
         FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
+          public_key: "FLWPUBK_TEST-d775f9c45f70041958618f1944d6aaf1-X",
           tx_ref: cart_id,
           amount: cart_total,
-          currency: "NGN",
+          currency: "USD",
           payment_options: "card, mobilemoneyghana, ussd",
           redirect_url: "127.0.0.1:8000/confirm_payment/"+cart_id,
           meta: {

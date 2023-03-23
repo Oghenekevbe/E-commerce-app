@@ -92,3 +92,11 @@ class OrderItem(models.Model):
         total = self.product.price * self.quantity
         return total
 
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    date_added = models.DateTimeField(default=timezone.now)
+
+  

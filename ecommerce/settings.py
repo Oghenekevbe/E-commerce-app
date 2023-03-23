@@ -25,6 +25,14 @@ SECRET_KEY = config('SECRET_KEY',default='my_default_value')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
+
+EMAIL_HOST ='smtp.gmail.com'
+EMAIL_HOST_USER = 'obayaonline@gmail.com'
+EMAIL_HOST_PASSWORD = 'snlffrsfhvovcgux'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 ALLOWED_HOSTS = []
 
 
@@ -32,6 +40,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'bootstrap5',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -52,6 +62,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
+
+CORS_ALLOWED_ORIGINS = [    "http://127.0.0.1:8000"]
 
 TEMPLATES = [
     {

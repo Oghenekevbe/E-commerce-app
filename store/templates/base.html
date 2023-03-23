@@ -50,6 +50,7 @@
                     
                     <li><a class="dropdown-item" href="{% url 'profile' user.customer.pk %}">Profile</a></li>
                     <li><a class="dropdown-item" href="{% url 'change_password' user.customer.pk %}">Change Password</a></li>
+                    <li><a class="dropdown-item" href="{% url 'contact_us' %}">Contact Us</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                   </ul>
@@ -74,8 +75,8 @@
               </li>
             </ul>
             <form class="d-flex" method="GET" action="{% url 'store' %}">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q" style='width:16rem;'>
+              <button class="btn btn-sm btn-outline-success" type="submit">Search</button>
             </form>
             
           </div>

@@ -12,6 +12,8 @@ from django.contrib.auth.views import LoginView
 from django.views import generic
 from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 
@@ -146,5 +148,21 @@ class ChangePassword(PasswordChangeView):
     success_url = reverse_lazy('store')
 
 
+class ContactView(CreateView):
+    model = Contact
+    template_name = 'customer/contact_us.html'
+    fields = ['name', 'email', 'message']
+    success_url = reverse_lazy('store')
 
+    def form_valid(self, form):
+        # Save the contact message to the database
+        response = super().form_valid(form)
+
+        # Send an email to your mailbox
+        contact = form.save()
+        subject = 'New contact message from {}'.format(contact.name)
+        message = 'From: {} <{}>\n\n{}'.format(contact.name, contact.email, contact.message)
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
+
+        return response
 
