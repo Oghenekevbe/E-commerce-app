@@ -27,11 +27,11 @@ SECRET_KEY = config('SECRET_KEY',default='my_default_value')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 EMAIL_HOST ='smtp.gmail.com'
-EMAIL_HOST_USER = 'obayaonline@gmail.com'
-EMAIL_HOST_PASSWORD = 'snlffrsfhvovcgux'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER',default='my_default_value')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD',default='my_default_value')
+EMAIL_PORT = config('EMAIL_PORT',default='my_default_value')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_BACKEND = config('EMAIL_BACKEND',default='my_default_value')
 
 ALLOWED_HOSTS = []
 

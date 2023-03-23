@@ -100,5 +100,9 @@ class Contact(models.Model):
     subject = models.CharField(max_length=100, null=True)
     message = models.TextField()
     date_added = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.name + ' - ' + self.to_email
+    
 
   
