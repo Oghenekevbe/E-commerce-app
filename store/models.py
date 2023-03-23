@@ -96,6 +96,8 @@ class OrderItem(models.Model):
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    to_email = models.EmailField(max_length=100, null=True)
+    subject = models.CharField(max_length=100, null=True)
     message = models.TextField()
     date_added = models.DateTimeField(default=timezone.now)
 

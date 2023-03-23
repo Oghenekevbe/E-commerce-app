@@ -151,18 +151,22 @@ class ChangePassword(PasswordChangeView):
 class ContactView(CreateView):
     model = Contact
     template_name = 'customer/contact_us.html'
-    fields = ['name', 'email', 'message']
+    fields = ['name', 'to_email', 'subject', 'message']    
     success_url = reverse_lazy('store')
 
     def form_valid(self, form):
         # Save the contact message to the database
         response = super().form_valid(form)
 
-        # Send an email to your mailbox
-        contact = form.save()
+        # Send an email to the specified address
+        contact = form.save(commit=False)
         subject = 'New contact message from {}'.format(contact.name)
-        message = 'From: {} <{}>\n\n{}'.format(contact.name, contact.email, contact.message)
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
-
+        message = 'From: {} <{}>\n\n{}'.format(contact.name, settings.EMAIL_HOST_USER, contact.message)
+        send_mail(subject, 
+                  message, 
+                  settings.EMAIL_HOST_USER, 
+                  [contact.to_email],
+                  fail_silently=False,
+                  )
+                  
         return response
-
