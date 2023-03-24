@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Obaya Online | Orders{% endblock title %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/orders.css' %}">
+
+
+
+    <div class="row">
+        <div class="col">
+            <h2>Order Details</h2>
+            <p>Transaction ID: {{ order.transaction_id }}</p>
+            <p>Customer: {{ order.customer }}</p>
+            <p>Date Ordered: {{ order.date_ordered }}</p>
+            <p>Total: {{ order.get_cart_total }}</p>
+
+            <h3>Order Items</h3>
+            <table class=' mb-5'>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items|Reversed %}
+                        <tr>
+                            <td>{{ item.product }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.product.price }}</td>
+                            <td>{{ item.get_total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock content %}

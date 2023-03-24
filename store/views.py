@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import LoginView
 from django.views import generic
@@ -53,6 +53,26 @@ def store(request):
 
     context = {'products': products, 'order': order, 'items':items,'query':query}
     return render(request, 'store.html', context)
+
+class Orders(StaffRequiredMixin, ListView):
+    model = Order
+    template_name = "customer/orders.html"
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('-date_ordered')
+    
+class OrderDetail(StaffRequiredMixin,DetailView):
+    model = Order
+    template_name = 'customer/order_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = self.get_object()
+        order_items = order.orderitem_set.all()
+        context['order_items'] = order_items
+        return context
 
 def cart(request):
     order = None

@@ -15,7 +15,6 @@
     {% comment %} css styling links {% endcomment %}
    
    		<!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/store.css' %}">
     <title>
         {% block title %}{% endblock title %}
     </title>
@@ -42,7 +41,7 @@
                 <a class="nav-link" href="#">Link</a>
               </li>
               <li class="nav-item dropdown">
-                {% if user.is_authenticated%}
+              {% if user.is_authenticated%}
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{user.username}}
                   </a>
@@ -52,12 +51,15 @@
                     <li><a class="dropdown-item" href="{% url 'change_password' user.customer.pk %}">Change Password</a></li>
                     {% if user.is_staff %}
                     <li><a class="dropdown-item" href="{% url 'contact_us' %}">Contact Customer</a></li>
-                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'orders' %}">Customer Orders</a></li>
+                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin Panel</a></li>
+                    {% else %}
                     <li><a class="dropdown-item" href="{% url 'contact_us2' %}">Contact Us</a></li>
+                    {% endif %}
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                   </ul>
-                {% else %}
+              {% else %}
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Guest
                 </a>
@@ -68,7 +70,7 @@
                   <li><a class="dropdown-item" href="register">Register</a></li>
                   <li><a class="dropdown-item" href="{% url 'contact_us2' %}">Contact Us</a></li>
                 </ul>
-                {% endif %}
+              {% endif %}
               </li>
               <li class="nav-item">
                 <a class="nav-link" href=" {% url 'cart' %} "><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
@@ -87,7 +89,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class='container'>
       {% if messages %}
          {% for message in message %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">

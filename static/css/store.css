@@ -1,1 +1,12 @@
 
+
+.row .col{
+    display: flex !important;
+    flex-wrap: wrap;
+    
+}
+
+.card{
+    width: 200px !important;
+    margin: 20px;
+}

@@ -4,13 +4,17 @@
 {% block title %}Obaya Online | Shopping at its finest{% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/store.css' %}">
+
 <div class="row">
-  {% for product in products%}
-    <div class="col" id='cart-card'>
-        <div class="card my-1" style="width: 14rem; height: 18rem; ">
-            <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." width='100'></a>
+  <div class="col">
+    {% for product in products%}
+    <div id='cart-card'>
+        <div class="card my-1">
+            <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." style='width:200;'></a>
             <div class="card-body">
-              <div class="card-text"><a href="{% url 'products' product.pk %}" style='text-decoration:none;'><h6>{{product.name}} - <small class=' fw-lighter'>${{product.price}}</small></h6></a>
+              <div class="card-text">
+                <a href="{% url 'products' product.pk %}" style='text-decoration:none;'><small>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></small></a>
                 <hr>
                   <button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button> 
 
@@ -23,6 +27,8 @@
 
     </div>
   {% endfor %}
+
+  </div>
 </div>
 
 {% endblock content %}
