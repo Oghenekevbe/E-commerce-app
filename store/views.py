@@ -11,7 +11,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import LoginView
 from django.views import generic
 from .forms import *
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
@@ -19,10 +19,15 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 # Create your views here.
-@user_passes_test(lambda u: u.is_staff)
-def contacts(request, *args, **kwargs):
-    view = ContactView.as_view()
-    return view(request, *args, **kwargs)
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('unauthorized')
+    
+def unauthorized(request):
+    return render(request, 'unauthorized.html')
 
 
 def store(request):
@@ -101,6 +106,22 @@ def AddToCart(request):
         
     
         return JsonResponse(total_items, safe=False)
+    
+class Products(DetailView):
+    model = Product
+    template_name = 'products.html'
+    context_object_name = 'product'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
+            order_item = order.orderitem_set.all()
+            context["order"] = order
+            context["order_item"] = order_item
+        return context
+        
+    
 
 
 def ConfirmPayment(request,pk):
@@ -155,7 +176,7 @@ class ChangePassword(PasswordChangeView):
 
 
 
-class ContactView(CreateView):
+class ContactView(StaffRequiredMixin,CreateView):
     model = Contact
     template_name = 'customer/contact_us.html'
     fields = ['name', 'to_email', 'subject', 'message']    
@@ -183,6 +204,16 @@ class ContactView(CreateView):
 class ContactView2(CreateView):
     form_class = ContactForm
     template_name = 'customer/contact_us2.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
+            order_item = order.orderitem_set.all()
+            context["order"] = order
+            context["order_item"] = order_item
+        return context
+        
 
     def get(self, request):
         form = self.form_class()
@@ -196,7 +227,3 @@ class ContactView2(CreateView):
         return render(request, self.template_name, {'form': form})
 
 
-@user_passes_test(lambda u: u.is_staff)
-def contacts(request, *args, **kwargs):
-    view = ContactView.as_view()
-    return view(request, *args, **kwargs)

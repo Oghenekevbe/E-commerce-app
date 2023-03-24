@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -63,7 +63,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ecommerce.urls'
 
-# CORS_ALLOWED_ORIGINS = [    "http://127.0.0.1:8000"]
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "https://api.flutterwave.com",
+    "https://api.ravepay.co",
+    "https://checkout-v3-ui-prod.f4b-flutterwave.com",
+]
 
 TEMPLATES = [
     {

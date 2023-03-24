@@ -7,6 +7,7 @@ urlpatterns = [
     path("cart/", views.cart, name="cart"), 
     path("checkout", views.checkout, name="checkout"), 
     path("add_to_cart", views.AddToCart, name="add_to_cart"), 
+    path("products/<str:pk>/", Products.as_view(), name="products"), 
     # path("update_cart", views.update_cart, name="update_cart"), 
     path("confirm_payment/<str:pk>", views.ConfirmPayment, name="confirm_payment"), 
 
@@ -24,6 +25,7 @@ urlpatterns = [
     # USER INTERACTIONS
     path("contact_us/", ContactView.as_view(), name="contact_us"), 
     path("contact_us2/", ContactView2.as_view(), name="contact_us2"), 
+    path("unauthorized/", views.unauthorized, name="unauthorized"), 
 
 
 

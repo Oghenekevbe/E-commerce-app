@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Obaya Online | Unauthorized Entry{% endblock title %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col">
+            <img src="{% static 'images/stop.jpg' %}" alt="" width='300'>
+            <p><h5>STOP in the name of the law!!!</h5></p>
+            <p><h6>You cannot access this page. Go <a href="{% url 'store' %}">home!!</a></h6></p>
+        </div>
+    </div>
+{% endblock content %}
