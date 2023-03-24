@@ -99,6 +99,7 @@ def AddToCart(request):
         print(order)
         order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
         order_item.quantity +=1
+        print(str(order_item) + ' - ' + str(order_item.quantity) + 'pcs in your cart')
         order_item.save()
 
         total_items = order.get_cart_items

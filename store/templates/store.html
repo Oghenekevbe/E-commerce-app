@@ -6,11 +6,11 @@
 {% block content %}
 <div class="row">
   {% for product in products%}
-    <div class="col-lg-4" id='cart-card'>
-        <div class="card my-1" style="width: 18rem;">
-            <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..."></a>
+    <div class="col" id='cart-card'>
+        <div class="card my-1" style="width: 14rem; height: 18rem; ">
+            <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." width='100'></a>
             <div class="card-body">
-              <div class="card-text"><a href="{% url 'products' product.pk %}"><h6>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></h6></a>
+              <div class="card-text"><a href="{% url 'products' product.pk %}" style='text-decoration:none;'><h6>{{product.name}} - <small class=' fw-lighter'>${{product.price}}</small></h6></a>
                 <hr>
                   <button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button> 
 
