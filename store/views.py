@@ -128,6 +128,7 @@ def AddToCart(request):
     
         return JsonResponse(total_items, safe=False)
     
+    
 class Products(DetailView):
     model = Product
     template_name = 'products.html'

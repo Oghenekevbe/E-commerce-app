@@ -57,31 +57,6 @@ function UpdateCart(e){
     .catch(error=>{console.log(error)})
 }
    
+  
+  
 
-// function UpdateCart(e){
-//     let product_id = e.target.value;
-//     let operation = e.target.id === 'addition' ? 'add' : 'remove'; // determine whether to add or remove an item
-//     let quantity_el = e.target.parentElement.parentElement.querySelector('.quantity'); // get the quantity element for the item
-//     let quantity = parseInt(quantity_el.innerText); // get the current quantity value
-//     if (operation === 'add') {
-//         quantity += 1; // increment the quantity if adding
-//     } else if (operation === 'remove' && quantity > 1) {
-//         quantity -= 1; // decrement the quantity if removing and quantity is greater than 1
-//     }
-//     console.log(`product_id: ${product_id}, operation: ${operation}, quantity: ${quantity}`);
-
-//     let url = '/update_cart/';
-//     let data = {id: product_id, operation: operation, quantity: quantity};
-//     fetch(url,{
-//         method  :   'POST',
-//         headers :   {'Content-Type':'application/json','X-CSRFToken': csrftoken},
-//         body    :   JSON.stringify(data)
-//     })
-//     .then(res=>res.json())
-//     .then(data=>{
-//         quantity_el.innerText = data.quantity; // update the quantity element with the new quantity value
-//         console.log(data)
-//     })
-//     .catch(error=>{console.log(error)})
-
-// }
