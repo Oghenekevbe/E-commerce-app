@@ -19,15 +19,6 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 # Create your views here.
-class StaffRequiredMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.is_staff
-
-    def handle_no_permission(self):
-        return redirect('unauthorized')
-    
-def unauthorized(request):
-    return render(request, 'unauthorized.html')
 
 
 def store(request):
@@ -54,25 +45,7 @@ def store(request):
     context = {'products': products, 'order': order, 'items':items,'query':query}
     return render(request, 'store.html', context)
 
-class Orders(StaffRequiredMixin, ListView):
-    model = Order
-    template_name = "customer/orders.html"
-    context_object_name = 'orders'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by('-date_ordered')
-    
-class OrderDetail(StaffRequiredMixin,DetailView):
-    model = Order
-    template_name = 'customer/order_detail.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        order = self.get_object()
-        order_items = order.orderitem_set.all()
-        context['order_items'] = order_items
-        return context
 
 def cart(request):
     order = None
@@ -123,10 +96,14 @@ def AddToCart(request):
         order_item.save()
 
         total_items = order.get_cart_items
+        message = f"{product.name} successfully added to your cart ({total_items} item(s) in your cart)"
+        messages.success(request, message)
         
         
     
         return JsonResponse(total_items, safe=False)
+
+
     
     
 class Products(DetailView):
@@ -162,6 +139,13 @@ class Register(CreateView):
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
 
+    def form_valid(self, form):
+        # Call parent form_valid method to save form data
+        response = super().form_valid(form)
+        # Add success message to be displayed on next page
+        messages.success(self.request, 'Registration successful. Please login to continue.')
+        return response
+
 
 class EmailLoginView(LoginView):
     authentication_form = EmailAuthenticationForm
@@ -189,12 +173,65 @@ class EditProfile(UpdateView):
     model = User
     template_name = "registration/edit_profile.html"
     form_class = ProfileForm
-    success_url = '/'
+    success_url = 'store'
+    def form_valid(self, form):
+        # Call parent form_valid method to save form data
+        response = super().form_valid(form)
+        # Add success message to be displayed on next page
+        messages.success(self.request, 'Profile edit successful.')
+        return response
     
 class ChangePassword(PasswordChangeView):
     form_class = ChangePasswordForm
     success_url = reverse_lazy('store')
+    def form_valid(self, form):
+        # Call parent form_valid method to save form data
+        response = super().form_valid(form)
+        # Add success message to be displayed on next page
+        messages.success(self.request, 'Password change successful.')
+        return response
+    
+    
+    
+    
+class ContactView2(CreateView):
+    form_class = ContactForm
+    template_name = 'customer/contact_us2.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
+            order_item = order.orderitem_set.all()
+            context["order"] = order
+            context["order_item"] = order_item
+        return context
+        
 
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.send_email()
+            messages.success(self.request, 'message sent successfully.')
+            return redirect('store')
+        return render(request, self.template_name, {'form': form})
+
+
+# STAFF ACCESS VIEWS
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('unauthorized')
+    
+def unauthorized(request):
+    return render(request, 'unauthorized.html')
 
 
 
@@ -223,29 +260,24 @@ class ContactView(StaffRequiredMixin,CreateView):
     
     
     
-class ContactView2(CreateView):
-    form_class = ContactForm
-    template_name = 'customer/contact_us2.html'
+class Orders(StaffRequiredMixin, ListView):
+    model = Order
+    template_name = "customer/orders.html"
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('-date_ordered')
+    
+    
+class OrderDetail(StaffRequiredMixin,DetailView):
+    model = Order
+    template_name = 'customer/order_detail.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
-            order_item = order.orderitem_set.all()
-            context["order"] = order
-            context["order_item"] = order_item
+        order = self.get_object()
+        order_items = order.orderitem_set.all()
+        context['order_items'] = order_items
         return context
-        
-
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.send_email()
-            return redirect('store')
-        return render(request, self.template_name, {'form': form})
-
 

@@ -2,13 +2,15 @@
 {% block title %}Obaya Online | Login{% endblock title %}
 
 {% block content %}
-<div class="form-group">
-    <h3>Kindly enter your details</h3>
-    <form action="" method='POST'>
-        {% csrf_token %}
-        {{form.as_p}}
-        <button class = 'btn btn-secondary'>Register</button>
-
-    </form>
-</div>
+    <div class="form-control-group">
+        <div class="form-group">
+            <h3>Kindly enter your details</h3>
+            <form action="" method='POST' class='form-control'>
+                {% csrf_token %}
+                {{form.as_p}}
+                <button class = 'btn btn-secondary'>Register</button>
+    
+            </form>
+        </div>
+    </div>
 {% endblock content %}
