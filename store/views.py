@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, ListView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import LoginView
 from django.views import generic
@@ -23,6 +23,15 @@ from django.contrib.auth.decorators import user_passes_test
 
 def store(request):
     products = Product.objects.all()
+    sort = request.GET.get('sort', '')
+    if sort == 'price':
+        products = Product.objects.order_by('price')
+    elif sort == '-price':
+        products = Product.objects.order_by('-price')
+    else:
+        products = Product.objects.order_by('date_added')
+
+    #  creating a search function   
     query =  request.GET.get('q')
     print(query)
     if query:
@@ -120,8 +129,13 @@ class Products(DetailView):
             context["order_item"] = order_item
         return context
         
-    
+class CartItemDeleteView(DeleteView):
+    model = OrderItem
+    success_url = reverse_lazy('cart')
 
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Item deleted from cart')
+        return super().delete(request, *args, **kwargs)
 
 def ConfirmPayment(request,pk):
     Order = order.object.get(id=pk)

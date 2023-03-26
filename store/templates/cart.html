@@ -53,13 +53,19 @@
                               <span id="quantity-{{ item.id }}" class="quantity-value">{{ item.quantity }}</span>
                               <button class="btn update-cart" data-action="addition" data-item-id="{{ item.id }}">+</button>
                             </div>
+                            <div style='flex:1' >
+                                <form action="{% url 'cart-item-delete' item.id %}" method="POST" style='margin-left: 15px;'>
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
                         </div>                        
                         <div style='flex:1' >{{item.get_total}}</div>
+                        
                     </div>
                 {% endfor %}
-
             </div>
-
+            
 
         </div>
     </div>
