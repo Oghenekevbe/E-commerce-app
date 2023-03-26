@@ -29,7 +29,8 @@ def store(request):
     elif sort == '-price':
         products = Product.objects.order_by('-price')
     else:
-        products = Product.objects.order_by('date_added')
+        products = Product.objects.order_by('-date_added')
+    print(products) 
 
     #  creating a search function   
     query =  request.GET.get('q')
