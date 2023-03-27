@@ -70,23 +70,50 @@ def cart(request):
     return render(request, 'cart.html', context)
 
 
+
 def checkout(request):
     order = None
     order_item = []
     product = Product.objects.all()
     if request.user.is_authenticated:
-      order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
-      order_item = order.orderitem_set.all()
-      customer_id = order.customer.user.id
-      customer_name = order.customer.user
-      customer_email = order.customer.user.email
-      customer_address = order.billing_address
-      cart_total = order.get_cart_total
+        order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
+        order_item = order.orderitem_set.all()
+        customer_id = order.customer.user.id
+        customer_name = order.customer.user
+        customer_email = order.customer.user.email
+        customer_addresses = order.customer.billing_addresses.all()
+        # Create a "no billing address" option
+        no_billing_address = BillingAddress(is_no_billing_address=True)
+        no_billing_address.id = -1
+        customer_addresses = list(customer_addresses) + [no_billing_address]
+        cart_total = order.get_cart_total
 
-    
-    context = {'product':product, 'items': order_item, 'order': order,'customer_id': customer_id,'customer_name': customer_name,
-    'customer_email': customer_email, 'customer_address':customer_address}
+        # Handle the form submission
+        if request.method == 'POST':
+            billing_address_id = request.POST.get('billing_address')
+            if billing_address_id == '-1':
+                billing_address = None
+            else:
+                billing_address = BillingAddress.objects.get(id=billing_address_id)
+            order.billing_address = billing_address
+            order.save()
+            return redirect('checkout')
+
+    context = { 
+        'product':product, 
+        'items': order_item, 
+        'order': order,
+        'customer_id': customer_id,
+        'customer_name': customer_name,
+        'customer_email': customer_email, 
+        'customer_addresses': customer_addresses,
+        'cart_total': cart_total,
+    }
     return render(request, 'checkout.html', context)
+
+
+
+
 
 
 

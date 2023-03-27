@@ -7,20 +7,27 @@ from django.utils import timezone
 # Create your models here.
 
 class BillingAddress(models.Model):
-    customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, blank=True, null=True,related_name='billing_addresses')
+    customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, blank=True, null=True, related_name='billing_addresses')
     address = models.CharField(max_length=225, null=True, blank=True)
     city = models.CharField(max_length=225, null=True, blank=True)
     state = models.CharField(max_length=225, null=True, blank=True)
     zipcode = models.CharField(max_length=225, null=True, blank=True)
     date_added = models.DateTimeField(default=timezone.now)
+    is_no_billing_address = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.address   
+        if self.is_no_billing_address:
+            return "No Billing Address"
+        else:
+            return str(self.customer.user) + ' - ' + self.address
+
+    class Meta:
+        ordering = ('is_no_billing_address', 'id')
 
 
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    billing_address = models.ForeignKey(BillingAddress, related_name='customers', on_delete=models.CASCADE, null=True, blank=True)
+    billing_address = models.ForeignKey(BillingAddress, related_name='customers', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.user)
@@ -67,7 +74,7 @@ class Order(models.Model):
     transaction_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
 
     def __str__(self):
-        return str(self.transaction_id)
+        return str(self.customer.user) + ' - ' + str(self.transaction_id)
     
     @property
     def get_cart_total(self):
