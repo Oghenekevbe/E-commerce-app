@@ -29,7 +29,12 @@ class Customer(models.Model):
 
  
  
-
+class Category(models.Model):
+    name = models.CharField(max_length=225)
+    
+    def __str__(self):
+        return self.name
+    
 
 
         
@@ -37,6 +42,7 @@ class Product(models.Model):
     name = models.CharField(max_length=225, null=True)
     image = models.ImageField(blank=False, null=False)
     description = models.CharField(null=True, blank=True,max_length=50)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name = 'product_category', null = True)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     digital = models.BooleanField(default=False, null=True, blank=True)
     date_added = models.DateTimeField(default=timezone.now)

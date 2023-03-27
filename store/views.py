@@ -36,7 +36,7 @@ def store(request):
     query =  request.GET.get('q')
     print(query)
     if query:
-        products = products.filter(Q(name__icontains=query) |Q(description__icontains=query))
+        products = products.filter(Q(name__icontains=query) |Q(description__icontains=query)|Q(category__name__icontains=query))
         print(products)
     
     order = None
