@@ -57,18 +57,48 @@ def store(request):
 
 
 
+# def cart(request):
+#     order = None
+#     order_item = []
+   
+#     if request.user.is_authenticated:
+#         order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
+#         order_item = order.orderitem_set.all()
+
+
+#     context = {'items': order_item, 'order': order}
+#     return render(request, 'cart.html', context)
+
+
+
 def cart(request):
     order = None
-    order_item = []
-   
+    order_items = []
+
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
-        order_item = order.orderitem_set.all()
+        order_items = order.orderitem_set.all()
 
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        action = request.POST.get('action')
 
-    context = {'items': order_item, 'order': order}
+        product = get_object_or_404(Product, id=product_id)
+
+        order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+        if action == 'add':
+            order_item.quantity += 1
+        elif action == 'subtract':
+            order_item.quantity -= 1
+
+        order_item.save()
+
+        if order_item.quantity <= 0:
+            order_item.delete()
+
+    context = {'items': order_items, 'order': order}
     return render(request, 'cart.html', context)
-
 
 
 def checkout(request):
