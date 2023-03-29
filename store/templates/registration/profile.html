@@ -5,27 +5,25 @@
 {% block content %}
   <div class="row">
     <div class="col">
-      {% if customer %}
+{% if customer %}
       <div class="col-2">
         <p><a class="dropdown-item" href="{% url 'edit_profile' customer.user.pk %}">Edit Profile</a></p>
       </div>      
-    <p>Name: {{ customer.user }}</p>
-    <p>Email: {{ customer.user.email }}</p>
-    {% if customer_address %}
+      <p>Name: {{ customer.user }}</p>
+      <p>Email: {{ customer.user.email }}</p>
+    {% if addresses %}
     <h6>Address:</h6>
-      <p>{{ customer_address.street_address }}</p>
-      {% if customer_address.apartment_address %}
-        <p>{{ customer_address.apartment_address }}</p>
-      {% endif %}
-      <p>{{ customer_address.city }}, {{ customer_address.state }} {{ customer_address.zipcode }}</p>
-      <p>{{ customer_address.country }}</p>
-      <p><a href="">(Edit)</a> |  <a href="">(Delete)</a></p>
+      {% for address in addresses %}
+        <p>{{ address.address }}</p>
+        <p>{{ address.city }}, {{ address.state }} {{ address.zipcode }}</p>
+        <p><a href="">(Edit)</a> |  <a href="">(Delete)</a></p>
+      {% endfor %}
     {% else %}
       <p>No address on file.</p>
     {% endif %}
-    {% else %}
-      <p>You are not logged in.</p>
-    {% endif %}
+{% else %}
+  <p>You are not logged in.</p>
+{% endif %}
 
     </div>
   </div>

@@ -28,7 +28,7 @@ urlpatterns = [
     path("contact_us/", ContactView.as_view(), name="contact_us"), 
     path("contact_us2/", ContactView2.as_view(), name="contact_us2"), 
     path("unauthorized/", views.unauthorized, name="unauthorized"), 
-
+    path('add_address/', AddAddress.as_view(), name='add_address'),
 
 
 

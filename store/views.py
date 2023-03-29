@@ -5,7 +5,7 @@ import json
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import LoginView
@@ -186,7 +186,16 @@ class Products(DetailView):
             context["order"] = order
             context["order_item"] = order_item
         return context
-        
+    
+class Category(DetailView):
+    model = Product
+    template_name = 'categories.html'
+    context_object_name = 'categories'
+    
+class AddCategory(CreateView):
+    model = Product
+    template_name = 'add_categories.html'
+    success_url = 'store'        
 class CartItemDeleteView(DeleteView):
     model = OrderItem
     success_url = reverse_lazy('cart')
@@ -231,13 +240,19 @@ class Profile(DetailView):
     template_name = "registration/profile.html"
     context_object_name = 'customer'
     
+    def get_address(self):
+        customer = self.request.user.customer
+        return customer.billing_addresses.all()
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
             order_item = order.orderitem_set.all()
+            addresses = self.get_address()
             context["order"] = order
             context["order_item"] = order_item
+            context["addresses"] = addresses
         return context
         
 
@@ -263,7 +278,25 @@ class ChangePassword(PasswordChangeView):
         messages.success(self.request, 'Password change successful.')
         return response
     
-    
+class AddAddress(CreateView):
+    template_name = "customer/add_address.html"
+    form_class = AddAddressForm
+    model = BillingAddress
+    success_url = reverse_lazy('checkout')
+ 
+    def form_valid(self, form):
+        # Associate the customer with the address being created
+        form.instance.customer = self.request.user.customer
+
+        # Set the created address as the customer's billing address (if requested)
+        set_as_billing = form.data.get('set_as_billing', False)
+        if set_as_billing:
+            self.request.user.customer.billing_address = form.instance
+            self.request.user.customer.save()
+
+        # Call the parent form_valid method to save the form
+        return super().form_valid(form)
+
     
     
 class ContactView2(CreateView):

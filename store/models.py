@@ -15,11 +15,14 @@ class BillingAddress(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
     is_no_billing_address = models.BooleanField(default=False)
 
+    
     def __str__(self):
         if self.is_no_billing_address:
             return "No Billing Address"
-        else:
+        elif self.customer is not None and self.customer.user is not None:
             return str(self.customer.user) + ' - ' + self.address
+        else:
+            return str(self.address)
 
     class Meta:
         ordering = ('is_no_billing_address', 'id')

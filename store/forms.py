@@ -89,3 +89,16 @@ class ContactForm(forms.Form):
 
         # Send the email
         email.send()
+
+
+
+class AddAddressForm(forms.ModelForm):
+    address = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
+    city = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
+    state = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
+    zipcode = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=False)
+ 
+    class Meta:
+        
+        model = BillingAddress
+        fields = ("address", "city", "state", "zipcode")
