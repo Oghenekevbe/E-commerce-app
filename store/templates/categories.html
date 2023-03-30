@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Obaya Online | Categories{% endblock title %}
+{% block content %}
+
+<div class="row">
+
+    <div><a href="{% url 'add_category' %}">Add Category</a></div>
+    {% for category in categories %}
+        <ul>
+            <li><a href="{% url 'category_detail' category.pk %}" >{{category.name}}</a></li>
+        </ul>
+    {% endfor %}
+
+
+</div>
+
+
+
+{% endblock %}

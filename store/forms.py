@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import Customer, BillingAddress, Categories
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
@@ -102,3 +102,11 @@ class AddAddressForm(forms.ModelForm):
         
         model = BillingAddress
         fields = ("address", "city", "state", "zipcode")
+
+
+
+class CategoryForm(forms.ModelForm):
+    name = forms.CharField(max_length=255, widget=forms.TextInput( attrs={'class':'form-control'}), required=True)
+    class Meta:
+        model = Categories
+        fields = ('name',)

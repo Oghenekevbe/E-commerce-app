@@ -23,6 +23,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 def store(request):
     products = Product.objects.all()
+    categories = Categories.objects.all()
     sort = request.GET.get('sort', '')
     if sort == 'price':
         products = Product.objects.order_by('price')
@@ -52,22 +53,11 @@ def store(request):
         items = order.orderitem_set.all()
 
 
-    context = {'products': products, 'order': order, 'items':items,'query':query}
+    context = {'products': products, 'order': order, 'items':items,'query':query, 'categories': categories}
     return render(request, 'store.html', context)
 
 
 
-# def cart(request):
-#     order = None
-#     order_item = []
-   
-#     if request.user.is_authenticated:
-#         order, created = Order.objects.get_or_create(customer=request.user.customer, complete=False)
-#         order_item = order.orderitem_set.all()
-
-
-#     context = {'items': order_item, 'order': order}
-#     return render(request, 'cart.html', context)
 
 
 
@@ -187,15 +177,34 @@ class Products(DetailView):
             context["order_item"] = order_item
         return context
     
-class Category(DetailView):
-    model = Product
+class Category(ListView):
+    model = Categories
     template_name = 'categories.html'
     context_object_name = 'categories'
     
 class AddCategory(CreateView):
-    model = Product
-    template_name = 'add_categories.html'
-    success_url = 'store'        
+    model = Categories
+    template_name = 'add_category.html'
+    form_class = CategoryForm
+    
+class CategoryDetail(DetailView): 
+    model = Categories
+    template_name = 'category_detail.html' 
+    context_object_name = 'category' 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = self.object  # Get the current category object from the view's context
+        products = Product.objects.filter(category=category)
+        context['products'] = products
+        if self.request.user.is_authenticated:
+            order, created = Order.objects.get_or_create(customer=self.request.user.customer, complete=False)
+            order_item = order.orderitem_set.all()
+            context["order"] = order
+            context["order_item"] = order_item
+        return context
+    
+    
 class CartItemDeleteView(DeleteView):
     model = OrderItem
     success_url = reverse_lazy('cart')

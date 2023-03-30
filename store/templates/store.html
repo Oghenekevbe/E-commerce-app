@@ -6,7 +6,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/store.css' %}">
 
-<div>
+<div class='sorting'>
   <div class=' mx-4 my-2'>
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,29 +21,45 @@
     
   </div>
 </div>
-<div class="row">
-  <div class="col">
-    {% for product in products%}
-    <div id='cart-card'>
-        <div class="card my-1">
-            <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." style='width:200;'></a>
-            <div class="card-body">
-              <div class="card-text">
-                <a href="{% url 'products' product.pk %}" style='text-decoration:none;'><small>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></small></a>
-                <hr>
-                  <button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button> 
 
-              </div>
+<div class='store'>
+  <div class='wrapper'>
+    <div class='products'>
+      {% for product in products%}
+        <div id='cart-card'>
+            <div class="card my-1">
+                <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." style='width:200;'></a>
+                <div class="card-body">
+                  <div class="card-text">
+                    <a href="{% url 'products' product.pk %}" style='text-decoration:none;'><small>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></small></a>
+                    <hr>
+                    {% if user.is_authenticated %}
+                      <button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button> 
+                    {% else %} 
+                      <a href="{% url 'register' %}" class='btn update-cart  btn-sm bg-danger text-light' >Add to Cart</a> 
+                    {% endif %}
+                  </div>
+                </div>
+              
             </div>
           
+
+
         </div>
-      
-
-
+      {% endfor %}
     </div>
-  {% endfor %}
+
+    <div class="categories">
+      {% for category in categories %}
+        <ul>
+            <li><a href="{% url 'category_detail' category.pk %}" >{{category.name}}</a></li>
+        </ul>
+      {% endfor %}
+  </div>
 
   </div>
 </div>
+
+
 
 {% endblock content %}
