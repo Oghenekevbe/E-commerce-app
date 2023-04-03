@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% autoescape off %}
+Hi {{ user.username }},
+
+Please click the link below to confirm your email address:
+<p><a href="{% url 'confirm_email' user.profile.email_confirmation_token %}">Confirm Email Address</a></p>
+
+Thanks,
+The Example Team
+{% endautoescape %}

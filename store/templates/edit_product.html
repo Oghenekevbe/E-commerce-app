@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Obaya Online | Update Product{% endblock title %}
+
+{% block content %}
+    <div class="row" >
+        <p><h6>Fill the form below to add update product</h6></p>
+
+        <form action="" method ='POST'>
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-primary" type='submit'>Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

@@ -13,6 +13,11 @@
             <p><button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button></p>
         </div>
 
+        {% if user.is_staff %}
+        <a href="{% url 'edit_product' product.pk %}">(Edit)</a>
+        
+        {% endif %}
+
     </div>
 
 {% endblock content %}

@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import LoginView
 from django.views import generic
@@ -15,6 +16,13 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import EmailMessage
+from django.contrib.auth.tokens import default_token_generator
+
 
 
 
@@ -55,7 +63,6 @@ def store(request):
 
     context = {'products': products, 'order': order, 'items':items,'query':query, 'categories': categories}
     return render(request, 'store.html', context)
-
 
 
 
@@ -224,24 +231,33 @@ def ConfirmPayment(request,pk):
 
 # USER CREDENTIALS
 
+User = get_user_model()
+
 class Register(CreateView):
     form_class = RegistrationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
 
-    def form_valid(self, form):
-        # Call parent form_valid method to save form data
-        response = super().form_valid(form)
-        # Add success message to be displayed on next page
-        messages.success(self.request, 'Registration successful. Please login to continue.')
-        return response
+    
 
+def confirm_email(request, token):
+    try:
+        # Look up the user by their confirmation token
+        user = User.objects.get(profile__email_confirmation_token=token)
+    except User.DoesNotExist:
+        # If the token is invalid, show an error message
+        messages.error(request, 'Invalid confirmation link.')
+        return redirect('login')
 
-class EmailLoginView(LoginView):
-    authentication_form = EmailAuthenticationForm
-    template_name = 'login.html'
+    # If the token is valid, mark the user's email as confirmed
+    user.email_confirmed = True
+    user.profile.email_confirmation_token = ''
+    user.profile.save()
+    user.save()
 
-
+    # Show a success message and redirect to the login page
+    messages.success(request, 'Your email address has been confirmed. Please log in to continue.')
+    return redirect('login')
 
 class Profile(DetailView):
       
@@ -395,3 +411,13 @@ class OrderDetail(StaffRequiredMixin,DetailView):
         context['order_items'] = order_items
         return context
 
+class AddProduct(StaffRequiredMixin ,CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'add_product.html'
+    
+class EditProduct(StaffRequiredMixin,UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'edit_product.html'
+    success_message = 'product updated successfully'

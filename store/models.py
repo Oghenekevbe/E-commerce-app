@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 import uuid
 import datetime
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+
 
 # Create your models here.
 
@@ -28,9 +31,9 @@ class BillingAddress(models.Model):
     class Meta:
         ordering = ('is_no_billing_address', 'id')
 
-
+User = get_user_model()
 class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     billing_address = models.ForeignKey(BillingAddress, related_name='customers', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
