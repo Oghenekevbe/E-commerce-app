@@ -321,7 +321,26 @@ class AddAddress(CreateView):
 
         # Call the parent form_valid method to save the form
         return super().form_valid(form)
-
+    
+class EditAddress(UpdateView):
+    template_name = "registration/edit_address.html"
+    form_class = AddAddressForm
+    model = BillingAddress
+    success_url = reverse_lazy('store')
+    def form_valid(self,form):
+            response = super().form_valid(form)
+            messages.success(self.request, 'Address updated successfully')
+            return response
+        
+    # end def
+ 
+class DeleteAddress(DeleteView):
+    template_name = "registration/delete_address.html"
+    form_class = AddAddressForm
+    model = BillingAddress
+    success_url = reverse_lazy('store')
+ 
+ 
     
     
 class ContactView2(CreateView):

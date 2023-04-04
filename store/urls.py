@@ -34,6 +34,8 @@ urlpatterns = [
     path("contact_us2/", ContactView2.as_view(), name="contact_us2"), 
     path("unauthorized/", views.unauthorized, name="unauthorized"), 
     path('add_address/', AddAddress.as_view(), name='add_address'),
+    path('<str:pk>/edit_address/', EditAddress.as_view(), name='edit_address'),
+    path('<str:pk>/delete_address/', DeleteAddress.as_view(), name='delete_address'),
 
 
 
