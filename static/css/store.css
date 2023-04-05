@@ -1,12 +1,22 @@
 
+.btn{
+    background-color: #F0A04B !important;
+}
+
+.sorting{
+margin-left: 25px;
+}
+
 .store{
     display: flex !important;
     flex-wrap: wrap !important;
+    
 }
 .store .wrapper{
     display: flex !important;
     flex-direction: row;
     justify-content: center !important;
+    margin-left: 40px !important;
 }
 
 
@@ -20,8 +30,22 @@
 .card{
     width: 200px !important;
     margin: 10px;
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.card img{
+    background-size: contain;
 }
 
-.categories{
-    margin-right: 100px !important;
+.category-wrapper{
+    background-color: #f5f2ee;
+    border-radius: 10px;
+    padding: 20px;
+    border-style: ridge;
+    border-color:#F0A04B ;
+}
+
+
+.categories ul li a{
+    text-decoration: none;
 }

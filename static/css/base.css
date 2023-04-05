@@ -1,0 +1,17 @@
+body{
+    background-color: #fff;
+}
+
+.navbar{
+    background-color: #6096B4 !important;
+    border-bottom-style: ridge;
+    border-bottom-color: #F0A04B;
+}
+
+.navbar ul li a{
+    color: #fff !important;
+}
+
+.dropdown-menu .dropdown-item{
+    color: #222121 !important;
+}
