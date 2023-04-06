@@ -76,10 +76,10 @@ class ChangePasswordForm(PasswordChangeForm):
 
 
 class ContactForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    subject = forms.CharField(max_length=100)
-    message = forms.CharField(widget=forms.Textarea)
+    name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
+    email = forms.EmailField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
+    subject = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}), required=True)
 
     def send_email(self):
         # Get the cleaned data from the form
@@ -94,6 +94,8 @@ class ContactForm(forms.Form):
 
         # Send the email
         email.send()
+
+
 
 
 

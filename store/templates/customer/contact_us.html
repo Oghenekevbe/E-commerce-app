@@ -2,15 +2,20 @@
 {% block title %}Obaya Online | Contact Us{% endblock title %}
 
 {% block content %}
-    <div class="form-control-group">
-        <p><h6>Kindly fill in the details below to contact us</h6></p>
-        <div class="form-group">
-            <form action="" method='POST' class='form-control'>
-                 {% csrf_token %}
-                {{form.as_p}}
-                <button type='submit'>Send Message</button>
-            </form>
+<div class="container">
+    <div class="row">
+        <div class="col" style="height: max-content;">
+          <h5 style="margin-top: 10px;">Kindly fill in the details below to contact the customer</h5>
+            <div class="form-control-group">
+                <div class="form-group">
+                    <form action="" method='POST' class='form-control'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type='submit' class="btn btn-primary">Send message</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
+  </div>
 {% endblock content %}

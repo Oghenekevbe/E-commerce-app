@@ -5,118 +5,119 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}">
 
-    <a href="{% url 'cart' %}" class='btn btn-outline-dark my-2'>Back to Cart</a>                
+<div class="container">
+  <div class="row">
+        <div class="col" style="height: max-content;">
+        <a href="{% url 'cart' %}" class='btn btn-outline-dark my-2'>Back to Cart</a>
 
-    <div class="row" id='checkout-wrapper'>
-
-        <div class="col" id='checkout-boxes' >
-
-                
-                <div class="card">
-                    <div class="card-body">
-                        <div class="box-element" id='form-wrapper'>
-                            
-                                    <div class="shipping-info">
-                                        <form method="POST">
-                                            {% csrf_token %}
-                                            <select name="billing_address" class="form-select" required>
-                                                {% for address in customer_addresses %}
-                                                    <option value="{{ address.id }}" {% if order.billing_address == address %}selected{% endif %}>{{ address.address }}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </form>
-                                    </div>
-                                    <a href="{% url 'add_address'  %}" style='margin-bottom:20px;'>Add a billing address</a>
-
-                                                            
-                        </div>
-                        
+        <div class="card">
+            <div class="card-body">
 
 
-                        <div class="box-element" id='payment-info'>
-                            <button type="button" onclick="makePayment()">Pay Now</button>
-            
-                        </div> 
-                          
-                    </div>
+            <div class="shipping-info">
+                <form method="POST">
+                {% csrf_token %}
+                <select name="billing_address" class="form-select" required>
+                    {% for address in customer_addresses %}
+                    <option value="{{ address.id }}" {% if order.billing_address == address %}selected{% endif %}>
+                    {{ address.address }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <a href="{% url 'add_address'  %}" style='margin-bottom:20px;'>Add a billing address</a>
+
+
+
+
+
+            <div class="box-element" id='payment-info'>
+                <button type="button" onclick="makePayment()">Pay Now</button>
+
+            </div>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+
+
+            <h3>Order Summary</h3>
+            <hr>
+            <table class='table'>
+                <tr>
+                <th>
+                    <h5>Items: <strong>{{order.get_cart_items}}</strong></h5>
+                </th>
+                <th>
+                    <h5>Total: <strong>price: ${{order.get_cart_total}}</strong></h5>
+                </th>
+
+
+            </table>
+
+            {% for item in items%}
+            <div class="cart-row">
+                <div style='flex:2'><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='50'></div>
+                <div style='flex:2'>{{item.product.name}}</div>
+                <div style='flex:1'>{{item.product.price}}</div>
+                <div style='flex:1'>
+                <p class='quantity'>{{item.quantity}}</p>
                 </div>
+                <div style='flex:1'>{{item.get_total}}</div>
+            </div>
+            {% endfor %}
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="box-element">
-                    
-                            <h3>Order Summary</h3>
-                            <hr>
-                            <table class='table'>
-                                <tr>
-                                    <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
-                                    <th><h5>Total: <strong>price: ${{order.get_cart_total}}</strong></h5></th>
-                                    
-        
-                            </table>
-                            <div class="box-element">
-                                {% for item in items%}
-                                    <div class="cart-row">
-                                        <div style='flex:2' ><img src="{{item.product.imageURL}}" alt="{{item.product.name}}" width='50'></div>
-                                        <div style='flex:2' >{{item.product.name}}</div>
-                                        <div style='flex:1' >{{item.product.price}}</div>
-                                        <div style='flex:1' ><p class='quantity'>{{item.quantity}}</p></div>
-                                        <div style='flex:1' >{{item.get_total}}</div>
-                                    </div>
-                                {% endfor %}
-                
-                            </div>
-                
-        
-                        </div>
-                    </div>
-                </div>
+
+
+
+            </div>
+        </div>
 
         </div>
-    </div>
-
-
+  </div>
+</div>
 
 
 
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script>
-    let cart_total = '{{order.get_cart_total|floatformat:"2"}}';
-    let cart_id = '{{order.transaction_id}}';
-    let customer_id = '{{customer_id}}';
-    let customer_name = '{{customer_name}}';
-    let customer_email = '{{customer_email}}';
-    let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
+  let cart_total = '{{order.get_cart_total|floatformat:"2"}}';
+  let cart_id = '{{order.transaction_id}}';
+  let customer_id = '{{customer_id}}';
+  let customer_name = '{{customer_name}}';
+  let customer_email = '{{customer_email}}';
+  let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
 
-    function makePayment() {
-        FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-d775f9c45f70041958618f1944d6aaf1-X",
-          tx_ref: cart_id,
-          amount: cart_total,
-          currency: "USD",
-          payment_options: "card, mobilemoneyghana, ussd",
-          redirect_url: "http://127.0.0.1:8000/confirm_payment/"+cart_id,
+  function makePayment() {
+    FlutterwaveCheckout({
+      public_key: "FLWPUBK_TEST-d775f9c45f70041958618f1944d6aaf1-X",
+      tx_ref: cart_id,
+      amount: cart_total,
+      currency: "USD",
+      payment_options: "card, mobilemoneyghana, ussd",
+      redirect_url: "http://127.0.0.1:8000/confirm_payment/" + cart_id,
 
-          meta: {
-            consumer_id: customer_id,
-            consumer_mac: "92a3-912ba-1192a",
-          },
-          customer: {
-            email: customer_email,
-            phone_number: "08102909304",
-            name: customer_name,
-          },
-          customizations: {
-            title: "Obaya Onlne",
-            description: "Shopping at its finest",
-            logo: logoUrl,
-          },
-        });
-      }
-
+      meta: {
+        consumer_id: customer_id,
+        consumer_mac: "92a3-912ba-1192a",
+      },
+      customer: {
+        email: customer_email,
+        phone_number: "08102909304",
+        name: customer_name,
+      },
+      customizations: {
+        title: "Obaya Onlne",
+        description: "Shopping at its finest",
+        logo: logoUrl,
+      },
+    });
+  }
 </script>
-
 
 
 

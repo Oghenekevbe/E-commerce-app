@@ -2,14 +2,22 @@
 {% block title %}Obaya Online | Add Category{% endblock title %}
 
 {% block content %}
-    <div class="row" >
-        <p><h6>Fill the form below to add an address</h6></p>
-
-        <form action="" method ='POST'>
+<div class="container">
+    <div class="row">
+        <div class="col" style="height: 82vh; margin-top: 10px;">
+          <p>
+          <h6>Fill the form below to add an address</h6>
+          </p>
+      
+          <form action="" method='POST'>
             {% csrf_token %}
             {{form.as_p}}
             <button class="btn btn-primary" type='submit'>Submit</button>
-        </form>
-    </div>
+          </form>
+      
+        </div>
+      
+      </div>
+</div>
 
 {% endblock %}

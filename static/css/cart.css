@@ -24,3 +24,16 @@
 #subtraction{
     background-color: #5bb450!important;
 }
+
+
+
+/* MEDIA QUERIES */
+
+@media only screen and (max-width:760px) {
+
+    #mobile-cart {
+        display: none;
+    }
+
+    
+}

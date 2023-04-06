@@ -20,6 +20,19 @@
         </ul>
       </div>
     </div>
+    <div id="category-dropdown" style="margin-top: 8px;">
+      <div class="dropdown">
+        <button class="btn btn-sm text-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Categories
+        </button>
+        <ul class="dropdown-menu">
+          {% for category in categories|slice:10 %}
+              <li><a class="dropdown-item" href="{% url 'category_detail' category.pk %}">{{ category.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  
   </div>
 
   <div class='store'>
@@ -33,7 +46,7 @@
         {% endfor %}
         </div>
       </div>
-      <div class='products'>
+      <div class='products' id="products">
         {% for product in products %}
           <div id='cart-card'>
             <div class="card my-1">
@@ -55,11 +68,5 @@
       </div>
     </div>
   </div>
-  <footer>
-    <div>
-      <p> &copy;Oghenekevbe Egume|2023</p>
-    </div>
-
-  </footer>
 
 {% endblock content %}

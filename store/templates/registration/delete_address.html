@@ -2,14 +2,21 @@
 {% block title %}Obaya Online | Delete Address{% endblock title %}
 
 {% block content %}
-    <div class="row" >
-        <p><h6>Sure you want to delete?</h6></p>
-
-        <form action="" method ='POST'>
-            {% csrf_token %}
-            {{form.as_p}}
-            <button class="btn btn-primary" type='submit'>Delete</button>
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col" style="height: 82vh;">
+            <h3 style="margin-top: 5px;">Are you sure you want to <span style="color: red; font-weight: bold;">delete</span>?</h3>
+            <div class="form-control-group">
+                <div class="form-group">
+                    <form action="" method='POST' class='form-control'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type='submit' class="btn btn-primary">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
 {% endblock %}

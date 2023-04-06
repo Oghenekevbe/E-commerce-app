@@ -1,17 +1,42 @@
-body{
+body {
     background-color: #fff;
 }
 
-.navbar{
+.navbar {
     background-color: #6096B4 !important;
     border-bottom-style: ridge;
     border-bottom-color: #F0A04B;
 }
 
-.navbar ul li a{
+.navbar ul li a {
     color: #fff !important;
 }
 
-.dropdown-menu .dropdown-item{
+.dropdown-menu .dropdown-item {
     color: #222121 !important;
+}
+
+#mobile-cart {
+    display: none;
+}
+
+footer {
+    background-color: #6096B4 !important;
+    height: 40px;
+    padding-top: 2px;
+}
+
+/* MEDIA QUERIES */
+
+@media only screen and (max-width:760px) {
+
+    #mobile-cart {
+        display: block;
+    }
+
+    footer {
+        background-color: #6096B4 !important;
+        height: 50px;
+        padding-top: 2px;
+    }
 }

@@ -2,52 +2,81 @@
 {% block title %}Obaya Online | Profile{% endblock title %}
 
 {% block content %}
+<div class="container">
   <div class="row">
     <div class="col">
       {% if customer %}
-        <div class="col-2">
-          <p><a class="dropdown-item" href="{% url 'edit_profile' customer.user.pk %}">Edit Profile</a></p>
+      <h3 style="margin-top: 5px;">{{user.username}}'s Profile</h3>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" value="{{ customer.user }}">
         </div>
-        <form method="POST">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ customer.user }}">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" name="email" value="{{ customer.user.email }}">
+        </div>
+        {% if addresses %}
+        <p><h6>Address:</h6></p>
+        {% for address in addresses %}
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div id="addressesAccordion" style="margin: 6px
+                ;">
+                  <div class="card">
+                    <div class="card-header" id="addressHeading">
+                      <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="true" aria-controls="addressCollapse">
+                         
+                        </button>
+                      </h5>
+                    </div>
+                
+                    <div id="addressCollapse" class="collapse show" aria-labelledby="addressHeading" data-parent="#addressesAccordion">
+                      <div class="card-body">
+                        <div class="addresses">
+                          <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" class="form-control" id="address" name="address" value="{{ address.address }}">
+                          </div>
+                          <div class="form-group">
+                            <label for="city">City:</label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{ address.city }}">
+                          </div>
+                          <div class="form-group">
+                            <label for="state">State:</label>
+                            <input type="text" class="form-control" id="state" name="state" value="{{ address.state }}">
+                          </div>
+                          <div class="form-group">
+                            <label for="zipcode">Zip Code:</label>
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ address.zipcode }}">
+                          </div>
+                          <p><a class="btn btn-sm" href="{% url 'edit_address' pk=address.pk %}">(Edit)</a> | <a class="btn btn-sm" href="{% url 'delete_address' address.pk%}">(Delete)</a></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ customer.user.email }}">
-          </div>
-          {% if addresses %}
-            <h6>Address:</h6>
-            {% for address in addresses %}
-              <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ address.address }}">
-              </div>
-              <div class="form-group">
-                <label for="city">City:</label>
-                <input type="text" class="form-control" id="city" name="city" value="{{ address.city }}">
-              </div>
-              <div class="form-group">
-                <label for="state">State:</label>
-                <input type="text" class="form-control" id="state" name="state" value="{{ address.state }}">
-              </div>
-              <div class="form-group">
-                <label for="zipcode">Zip Code:</label>
-                <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ address.zipcode }}">
-              </div>
-              <p><a href="{% url 'edit_address' pk=address.pk %}">(Edit)</a> |  <a href="{% url 'delete_address' address.pk%}">(Delete)</a></p>
-            {% endfor %}
-          {% else %}
-            <p>No address on file.</p>
-          {% endif %}
-          <button type="submit" class="btn btn-primary">Update Profile</button>
-          <a href="{% url 'add_address'  %}" class="btn btn-secondary">Add a new address</a>
-        </form>
+        {% endfor %}
+        {% else %}
+        <p>No address on file.</p>
+        {% endif %}
+
+        <a class="btn btn-primary" href="{% url 'edit_profile' customer.user.pk %}">Edit Profile</a>
+
+        <a href="{% url 'add_address'  %}" class="btn btn-secondary">Add a new address</a>
+      </form>
       {% else %}
-        <p>You are not logged in.</p>
+      <p>You are not logged in.</p>
       {% endif %}
     </div>
   </div>
+</div>
 {% endblock %}
