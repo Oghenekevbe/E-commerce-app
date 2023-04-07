@@ -3,33 +3,38 @@
   Obaya Online |Product-Category
 {% endblock %}
 {% block content %}
-  <div class="row">
-    <!-- Assuming you're displaying the category name at the top of the page -->
-    <h1>{{ category.name }}</h1>
-
-    <!-- Loop through the products and display their details -->
-    {% for product in products %}
-    <div id='cart-card my-3'>
-        <div class="card my-1">
-            <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." style='width:200;'></a>
-            <div class="card-body">
-              <div class="card-text">
-                <div class="card-text">
-                    <p><small>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></small></p>
-                    <hr>
-                      <a href="{% url 'products' product.pk %}" class='btn update-cart  btn-sm bg-danger text-light' >View Product</a>
+  <div class="container">
+    <div class="row">
+      <div class="col" style="max-height: max-content; margin-top: 10px; min-height: 82vh;">
+        <!-- Assuming you're displaying the category name at the top of the page -->
+        <h1>{{ category.name }}</h1>
     
+        <!-- Loop through the products and display their details -->
+        {% for product in products %}
+        <div id='cart-card my-3'>
+            <div class="card my-1" style="width: 200px;">
+                <a href="{% url 'products' product.pk %}"><img src="{{product.imageURL}} " class="card-img-top" alt="..." style='background-size: contain;'></a>
+                <div class="card-body">
+                  <div class="card-text">
+                    <div class="card-text">
+                        <p><small>{{product.name}} - <span class=' fw-lighter'>${{product.price}}</span></small></p>
+                        <hr>
+                          <a href="{% url 'products' product.pk %}" class='btn update-cart  btn-sm bg-danger text-light' >View Product</a>
+        
+                      </div>
                   </div>
-              </div>
+                </div>
+              
             </div>
           
+    
         </div>
-      
-
+    
+          {% empty %}
+          <p>No products in this category yet.</p>
+        {% endfor %}
+      </div>
+    
     </div>
-
-      {% empty %}
-      <p>No products in this category yet.</p>
-    {% endfor %}
   </div>
 {% endblock %}

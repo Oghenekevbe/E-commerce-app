@@ -2,15 +2,24 @@
 {% block title %}Obaya Online | Login{% endblock title %}
 
 {% block content %}
-    <div class="form-control-group">
-        <div class="form-group">
-            <h3>Kindly enter your details</h3>
-            <form action="" method='POST' class='form-control'>
-                {% csrf_token %}
-                {{form.as_p}}
-                <button class = 'btn btn-secondary'>Register</button>
-    
-            </form>
+
+<div class="container">
+    <div class="row">
+        <div class="col" style="min-height: 82vh; max-height: max-content;">
+            <div class="form-control-group">
+                <div class="form-group">
+                    <h3>Kindly enter your details</h3>
+                    <form action="" method='POST' class='form-control'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button class = 'btn btn-secondary'>Login</button>
+            
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
+
 {% endblock content %}

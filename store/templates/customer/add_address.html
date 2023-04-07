@@ -2,14 +2,18 @@
 {% block title %}Obaya Online | Add Address{% endblock title %}
 
 {% block content %}
-    <div class="row" >
-        <p><h6>Fill the form below to add an address</h6></p>
-
-        <form action="" method ='POST'>
-            {% csrf_token %}
-            {{form.as_p}}
-            <button class="btn btn-primary" type='submit'>Submit</button>
-        </form>
+    <div class="container">
+        <div class="row">
+            <div class="col"  style="min-height: 82vh; max-height: max-content;">
+                <p><h6>Fill the form below to add an address</h6></p>
+        
+                <form action="" method ='POST'>
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button class="btn btn-primary" type='submit'>Submit</button>
+                </form>
+            </div>
+        
+        </div>
     </div>
-
 {% endblock %}

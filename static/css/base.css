@@ -6,6 +6,11 @@ body {
     background-color: #6096B4 !important;
     border-bottom-style: ridge;
     border-bottom-color: #F0A04B;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    width: 100%;
+    position: fixed;
+    top: 0; 
+    z-index: 100;
 }
 
 .navbar ul li a {
@@ -33,10 +38,28 @@ footer {
     #mobile-cart {
         display: block;
     }
-
+    #cart-button{
+        background-color: #6096B4 !important;
+        opacity: 0.2;
+    }
     footer {
         background-color: #6096B4 !important;
         height: 50px;
         padding-top: 2px;
+    }
+
+    .navbar {
+        background-color: #6096B4 !important;
+        border-bottom-style: ridge;
+        border-bottom-color: #F0A04B;
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+        width: 100%;
+        overflow: hidden;  
+        position: fixed;
+        top: 0; 
+        z-index: 100;
+    }
+    #base-container{
+        margin-top: 80px !important;
     }
 }

@@ -8,8 +8,9 @@
 
 
 
+<div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col" style="min-height: 82vh; max-height: max-content;">
             <h2>Order Details</h2>
             <p>Transaction ID: {{ order.transaction_id }}</p>
             <p>Customer: {{ order.customer }}</p>
@@ -41,5 +42,6 @@
         </div>
     </div>
 
+</div>
 
 {% endblock content %}

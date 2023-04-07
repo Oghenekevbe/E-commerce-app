@@ -3,21 +3,25 @@
 
 {% block content %}
 
+<div class="container">
     <div class="row">
-        <div class="col my-3" id='cart-card'>
-            <p><img src="{{product.imageURL}}" alt="" width='300'></p>
-            <p>{{product.name}}</p>
-            <p>{{product.description}}</p>
-            <p>{{product.category}}</p>
-            <p>${{product.price}}</p>
-            <p><button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button></p>
+        <div class="col" style="min-height: 82vh; max-height: max-content; margin-top: 20px; ">
+            <div id='cart-card'>
+                <p><img src="{{product.imageURL}}" alt="" width='300' style="border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;"></p>
+                <p>{{product.name}}</p>
+                <p>{{product.description}}</p>
+                <p>{{product.category}}</p>
+                <p>${{product.price}}</p>
+                <p><button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button></p>
+            </div>
+    
+            {% if user.is_staff %}
+            <a href="{% url 'edit_product' product.pk %}">(Edit)</a>
+            
+            {% endif %}
         </div>
 
-        {% if user.is_staff %}
-        <a href="{% url 'edit_product' product.pk %}">(Edit)</a>
-        
-        {% endif %}
-
     </div>
+</div>
 
 {% endblock content %}

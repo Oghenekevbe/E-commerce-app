@@ -2,6 +2,7 @@
     background-color: #F0A04B !important;
 }
 
+
 .sorting {
     margin-left: 25px;
     display: flex;
@@ -14,7 +15,6 @@
 .store {
     display: flex !important;
     flex-wrap: wrap !important;
-
 }
 
 .store .wrapper {

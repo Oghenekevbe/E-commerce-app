@@ -8,9 +8,9 @@
 
 <div class="container">
     <div class="row">
-        <div class="col" style="height: max-content;">
-            <div class="row my-1">
-                <div class="col-lg-12">
+        <div class="col" style="min-height: 82vh; max-height: max-content; margin-top: 30px;">
+            <div>
+                <div>
         
                 {% comment %} items in the cart {% endcomment %}
         
@@ -22,7 +22,11 @@
                                 <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
                                 <th><h5>Total: <strong>price: ${{order.get_cart_total}}</strong></h5></th>
                                 <th>
+                                    {% if user.is_authenticated %}
                                     <a style='float:right; margin:5px'  href=" {% url 'checkout' %} " class='btn btn-outline-dark' >Checkout &rarr;</a>
+                                    {% else %}
+                                    <a style='float:right; margin:5px'  href=" {% url 'register' %} " class='btn btn-outline-dark' >Checkout &rarr;</a>
+                                    {% endif %}
                                 </th>
                             </tr>
         
