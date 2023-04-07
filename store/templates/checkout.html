@@ -86,10 +86,11 @@
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script>
   let cart_total = '{{order.get_cart_total|floatformat:"2"}}';
-  let cart_id = '{{order.transaction_id}}';
+  let cart_id = '{{order.transaction_id}}'+ (math.random()*5);
   let customer_id = '{{customer_id}}';
   let customer_name = '{{customer_name}}';
   let customer_email = '{{customer_email}}';
+  let customer_phonenumber = '{{customer_phonenumber}}'
   let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
 
   function makePayment() {
@@ -107,7 +108,7 @@
       },
       customer: {
         email: customer_email,
-        phone_number: "08102909304",
+        phone_number: customer_phonenumber,
         name: customer_name,
       },
       customizations: {

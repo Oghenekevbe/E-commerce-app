@@ -18,6 +18,16 @@
           <label for="email">Email:</label>
           <input type="email" class="form-control" id="email" name="email" value="{{ customer.user.email }}">
         </div>
+        <div class="form-group">
+          {% if customer.phone_number %}
+          <label for="phone_number">Phone Number:</label>
+          <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ customer.phone_number }}">
+          <a href="{% url 'edit_phonenumber' customer.pk %}">Edit</a>
+          {% else %}
+          <a href="{% url 'add_phonenumber' customer.user.pk %}">Add a phone number</a>
+          {% endif %}
+        </div>
+              
         {% if addresses %}
         <p><h6>Address:</h6></p>
         {% for address in addresses %}

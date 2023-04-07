@@ -11,11 +11,19 @@
   <div class="row">
       <div class="col" style="height: 82vh;">
         <h5 style="margin-top: 10px;">Customer Orders</h5>
+
         <table>
+          
+            <ul>
+              <li><a class="btn btn-secondary btn-sm mt-2" href="?sort=transaction_id">Sort by transaction_id</a></li>
+              <li><a class="btn btn-secondary btn-sm mt-2" href="?sort=email">Sort by E-mail address</a></li>
+              <li><a class="btn btn-secondary btn-sm mt-2" href="?sort=-date_ordered">Sort by date (newest)</a></li>
+            </ul>
+          
           <thead>
             <tr>
               <th>Transaction ID</th>
-              <th>Customer</th>
+              <th>Customer E-mail  - Customer Name</th>
               <th>Date Ordered</th>
               <th>Complete</th>
             </tr>
@@ -24,7 +32,7 @@
             {% for order in orders %}
               <tr>
                 <td><a href="{% url 'order_detail' order.transaction_id  %}">{{ order.transaction_id }}</a></td>
-                <td>{{ order.customer }} - {{ order.customer.user.email }}</td>
+                <td>{{ order.customer.user.email }}  -  {{ order.customer }}</td>
                 <td>{{ order.date_ordered }}</td>
                 <td>{{ order.complete }}</td>
               </tr>

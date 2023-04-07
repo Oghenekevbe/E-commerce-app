@@ -27,6 +27,8 @@ urlpatterns = [
     path("register/", Register.as_view(), name="register"), 
     path("<str:pk>/profile/", Profile.as_view(), name="profile"), 
     path("<str:pk>/edit_profile/", EditProfile.as_view(), name="edit_profile"), 
+    path("<str:pk>/add_phonenumber/", AddPhonenumber.as_view(), name="add_phonenumber"), 
+    path("<str:pk>/edit_phonenumber/", EditPhonenumber.as_view(), name="edit_phonenumber"), 
     path("<str:pk>/change_password/", ChangePassword.as_view(template_name='registration/change_password.html'), name="change_password"), 
     path('confirm-email/<str:token>/', confirm_email, name='confirm_email'),  
     

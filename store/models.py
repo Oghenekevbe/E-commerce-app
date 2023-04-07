@@ -34,6 +34,7 @@ class BillingAddress(models.Model):
 User = get_user_model()
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    phone_number = models.IntegerField(("Phone Number"), null=True, blank=True)
     billing_address = models.ForeignKey(BillingAddress, related_name='customers', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):

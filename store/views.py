@@ -1,27 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import *
 from django.http import JsonResponse
 import json
 from django.contrib import messages
 from django.db.models import Q
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
-from django.contrib.auth import authenticate, login, get_user_model
-from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.views import LoginView
-from django.views import generic
-from .forms import *
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.core.mail import send_mail
-from django.conf import settings
+from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import default_token_generator
+
+from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.views import PasswordChangeView, LoginView
+
+from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
+from .models import *
+from .forms import *
+from django.conf import settings
 
 
 
@@ -108,6 +107,7 @@ def checkout(request):
         customer_id = order.customer.user.id
         customer_name = order.customer.user
         customer_email = order.customer.user.email
+        customer_phonenumber = order.customer.phone_number
         customer_addresses = order.customer.billing_addresses.all()
         # Create a "no billing address" option
         no_billing_address = BillingAddress(is_no_billing_address=True)
@@ -133,6 +133,7 @@ def checkout(request):
         'customer_id': customer_id,
         'customer_name': customer_name,
         'customer_email': customer_email, 
+        'customer_phonenumber': customer_phonenumber,
         'customer_addresses': customer_addresses,
         'cart_total': cart_total,
     }
@@ -262,7 +263,7 @@ def confirm_email(request, token):
 class Profile(DetailView):
       
     model = Customer
-    template_name = "registration/profile.html"
+    template_name = "customer/profile.html"
     context_object_name = 'customer'
     
     def get_address(self):
@@ -283,7 +284,7 @@ class Profile(DetailView):
 
 class EditProfile(UpdateView):
     model = User
-    template_name = "registration/edit_profile.html"
+    template_name = "customer/edit_profile.html"
     form_class = ProfileForm
     success_url = 'store'
     def form_valid(self, form):
@@ -292,6 +293,32 @@ class EditProfile(UpdateView):
         # Add success message to be displayed on next page
         messages.success(self.request, 'Profile edit successful.')
         return response
+    
+class AddPhonenumber(CreateView):
+    model = Customer
+    template_name = "customer/add_phonenumber.html"
+    fields = ['phone_number']
+    
+    def form_valid(self, form):
+        # Get the logged-in user
+        user = self.request.user
+
+        # Update the existing Customer instance with the new phone number
+        customer = Customer.objects.get(user=user)
+        customer.phone_number = form.cleaned_data['phone_number']
+        customer.save()
+
+        return redirect(self.get_success_url())
+    
+    def get_success_url(self):
+        return reverse_lazy('store')
+
+class EditPhonenumber(UpdateView):
+    model = Customer
+    template_name = "customer/add_phonenumber.html"
+    fields = ['phone_number']
+    success_url = reverse_lazy('store')
+
     
 class ChangePassword(PasswordChangeView):
     form_class = ChangePasswordForm
@@ -323,7 +350,7 @@ class AddAddress(CreateView):
         return super().form_valid(form)
     
 class EditAddress(UpdateView):
-    template_name = "registration/edit_address.html"
+    template_name = "customer/edit_address.html"
     form_class = AddAddressForm
     model = BillingAddress
     success_url = reverse_lazy('store')
@@ -335,7 +362,7 @@ class EditAddress(UpdateView):
     # end def
  
 class DeleteAddress(DeleteView):
-    template_name = "registration/delete_address.html"
+    template_name = "customer/delete_address.html"
     form_class = AddAddressForm
     model = BillingAddress
     success_url = reverse_lazy('store')
@@ -415,8 +442,17 @@ class Orders(StaffRequiredMixin, ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by('-date_ordered')
+        sort = self.request.GET.get('sort', '')
+        if sort == 'transaction_id':
+            queryset = Order.objects.order_by('transaction_id')
+        elif sort == 'email':
+            queryset = Order.objects.order_by('customer__user__email')
+        elif sort == 'date_ordered':
+            queryset = Order.objects.order_by('date_ordered')
+            # comment: 
+        else:
+            queryset = Order.objects.order_by('-date_ordered')
+        return queryset
     
     
 class OrderDetail(StaffRequiredMixin,DetailView):

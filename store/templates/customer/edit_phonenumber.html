@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Obaya Online | Edit Phonenumber{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col" style="height: 82vh;">
+                <h3 style="margin-top: 5px;">Edit Phonenumber</h3>
+                <div class="form-control-group">
+                    <div class="form-group">
+                        <form action="" method='POST' class='form-control'>
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <button type='submit' class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

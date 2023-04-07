@@ -33,28 +33,6 @@ class RegistrationForm(UserCreationForm):
         return user
 
 
-class EmailAuthenticationForm(AuthenticationForm):
-    email = forms.EmailField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
-    password = forms.CharField(max_length=255, widget=forms.PasswordInput(attrs={'class':'form-control', 'type': 'password'}), required=True)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs.update({'autofocus': True})
-        self.fields['password'].widget.attrs.update({'autocomplete': 'current-password'})
-
-    def clean_username(self):
-        email = self.cleaned_data.get('email')
-        if email:
-            UserModel = get_user_model()
-            try:
-                user = UserModel.objects.get(email=email)
-            except UserModel.DoesNotExist:
-                raise forms.ValidationError("Invalid email or password")
-            else:
-                return user.username
-        else:
-            return self.cleaned_data.get('username')
-        
         
 class ProfileForm(forms.ModelForm):
     username = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}), required=True)
