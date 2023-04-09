@@ -6,7 +6,6 @@ cffi
 charset-normalizer 
 click==8.1.3
 colorama 
-conda==23.1.0
 cryptography 
 cssbeautifier==1.14.7
 distlib==0.3.6
@@ -30,7 +29,6 @@ idna
 image==1.5.33
 importlib-metadata==5.0.0
 jsbeautifier==1.14.7
-menuinst 
 mysql-connector==2.2.9
 mysql-connector-python==8.0.30
 pathspec==0.10.2
@@ -66,5 +64,7 @@ win-inet-pton
 wincertstore==0.2
 zipp==3.10.0
 zstandard==0.18.0
+menuinst 
 conda-package-handling 
 conda_package_streaming 
+conda==23.1.0

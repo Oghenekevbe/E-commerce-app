@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Obaya Online | Checkout{% endblock title %}
 {% load static %}
+
+{% block title %}Obaya Online | Checkout{% endblock title %}
+
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}">
@@ -34,7 +36,7 @@
 
 
             <div class="box-element" id='payment-info'>
-                <button type="button" onclick="makePayment()">Pay Now</button>
+                <button type="button" onclick="makePayment()" class="btn btn-success" style="margin-top: 3px;">Pay Now</button>
 
             </div>
 
@@ -86,16 +88,17 @@
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script>
   let cart_total = '{{order.get_cart_total|floatformat:"2"}}';
-  let cart_id = '{{order.transaction_id}}'+ (math.random()*5);
+  let cart_id = '{{order.transaction_id}}'+ (Math.random()*5);
   let customer_id = '{{customer_id}}';
   let customer_name = '{{customer_name}}';
   let customer_email = '{{customer_email}}';
   let customer_phonenumber = '{{customer_phonenumber}}'
-  let logoUrl = '/static/images/Orange_and_Gray_Tag_Cart_Virtual_Shop_Logo-removebg-preview.png';
+  flutterwavePublicKey = "{{ flutterwave_public_key }}";
+  let logoUrl = '/static/images/obaya.png';
 
   function makePayment() {
     FlutterwaveCheckout({
-      public_key: "FLWPUBK_TEST-d775f9c45f70041958618f1944d6aaf1-X",
+      public_key: flutterwavePublicKey,
       tx_ref: cart_id,
       amount: cart_total,
       currency: "USD",

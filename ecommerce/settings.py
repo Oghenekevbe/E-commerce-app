@@ -33,13 +33,15 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS')
+FLUTTERWAVE_PUBLIC_KEY = config('FLUTTERWAVE_PUBLIC_KEY')
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'bootstrap5',
+    # 'bootstrap5',
     # 'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

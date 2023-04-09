@@ -21,6 +21,8 @@ from django.views.generic import CreateView, DetailView, UpdateView, ListView, D
 from .models import *
 from .forms import *
 from django.conf import settings
+from decouple import config
+
 
 
 
@@ -114,6 +116,8 @@ def checkout(request):
         no_billing_address.id = -1
         customer_addresses = list(customer_addresses) + [no_billing_address]
         cart_total = order.get_cart_total
+        
+        flutterwave_public_key = config('FLUTTERWAVE_PUBLIC_KEY')
 
         # Handle the form submission
         if request.method == 'POST':
@@ -136,6 +140,7 @@ def checkout(request):
         'customer_phonenumber': customer_phonenumber,
         'customer_addresses': customer_addresses,
         'cart_total': cart_total,
+        'flutterwave_public_key': flutterwave_public_key,
     }
     return render(request, 'checkout.html', context)
 
