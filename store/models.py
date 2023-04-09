@@ -83,8 +83,7 @@ class Order(models.Model):
     billing_address = models.ForeignKey(BillingAddress, on_delete=models.SET_NULL, blank=True, null=True, related_name='billing_address_order_set')    
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
-    transaction_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-
+    transaction_id = models.UUIDField(default=uuid.uuid4().hex, primary_key=True)
     def __str__(self):
         return str(self.customer.user) + ' - ' + str(self.transaction_id)
     
@@ -111,7 +110,11 @@ class OrderItem(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
-        return self.product.name
+        if self.product:
+            return self.product.name
+        else:
+            return 'Order Item ' + str(self.id)
+
     
     def get_total(self):
         total = self.product.price * self.quantity

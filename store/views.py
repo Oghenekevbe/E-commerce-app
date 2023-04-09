@@ -226,9 +226,9 @@ class CartItemDeleteView(DeleteView):
         messages.success(request, 'Item deleted from cart')
         return super().delete(request, *args, **kwargs)
 
-def ConfirmPayment(request,pk):
-    Order = order.object.get(id=pk)
-    order.completed = True
+def ConfirmPayment(request, pk):
+    order = Order.objects.get(transaction_id=pk)
+    order.complete = True
     order.save()
     messages.success(request, "Payment made successfully")
     return redirect('store')
