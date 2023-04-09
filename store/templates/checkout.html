@@ -88,22 +88,23 @@
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script>
   let cart_total = '{{order.get_cart_total|floatformat:"2"}}';
-  let cart_id = '{{order.transaction_id}}'+ (Math.random()*5);
+  let cart_id = '{{order.transaction_id}}';
   let customer_id = '{{customer_id}}';
   let customer_name = '{{customer_name}}';
   let customer_email = '{{customer_email}}';
   let customer_phonenumber = '{{customer_phonenumber}}'
-  flutterwavePublicKey = "{{ flutterwave_public_key }}";
+  let flutterwavePublicKey = "{{ flutterwave_public_key }}";
   let logoUrl = '/static/images/obaya.png';
+  let randomInt = Math.floor(Math.random() * 10);
 
   function makePayment() {
     FlutterwaveCheckout({
       public_key: flutterwavePublicKey,
-      tx_ref: cart_id,
+      tx_ref: cart_id + randomInt,
       amount: cart_total,
       currency: "USD",
       payment_options: "card, mobilemoneyghana, ussd",
-      redirect_url: "http://http://obayaonline.pythonanywhere.com/confirm_payment/"+cart_id,
+      redirect_url: "http://obayaonline.pythonanywhere.com/confirm_payment/"+cart_id,
 
       meta: {
         consumer_id: customer_id,
