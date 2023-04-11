@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Obaya Online | Contact Us{% endblock title %}
+{% block title %}Obaya Online | Products{% endblock title %}
 
 {% block content %}
 
@@ -12,7 +12,11 @@
                 <p>{{product.description}}</p>
                 <p>{{product.category}}</p>
                 <p>${{product.price}}</p>
+                {%if user.is_authenticated %}
                 <p><button class='btn update-cart  btn-sm bg-danger text-light' value={{product.id}}>Add to Cart</button></p>
+                {% else %}
+                <p><a class='btn btn-sm btn-danger' href='{% url 'register'%}'>Add to Cart </a></p
+                {% endif %}
             </div>
     
             {% if user.is_staff %}
