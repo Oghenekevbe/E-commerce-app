@@ -246,24 +246,6 @@ class Register(CreateView):
 
     
 
-def confirm_email(request, token):
-    try:
-        # Look up the user by their confirmation token
-        user = User.objects.get(profile__email_confirmation_token=token)
-    except User.DoesNotExist:
-        # If the token is invalid, show an error message
-        messages.error(request, 'Invalid confirmation link.')
-        return redirect('login')
-
-    # If the token is valid, mark the user's email as confirmed
-    user.email_confirmed = True
-    user.profile.email_confirmation_token = ''
-    user.profile.save()
-    user.save()
-
-    # Show a success message and redirect to the login page
-    messages.success(request, 'Your email address has been confirmed. Please log in to continue.')
-    return redirect('login')
 
 class Profile(DetailView):
       
